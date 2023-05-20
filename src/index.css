@@ -1,0 +1,68 @@
+*{
+  font-family: 'Montserrat';
+}
+
+.body{
+  background-color: #F1F6F9;
+  height: 100vh;
+}
+
+.nav{
+  background-color: #F1F6F9;
+}
+
+.login-btn{
+  color: #394867 !important;
+}
+
+.login-btn:hover{
+  background-color: #394867 !important;
+  color: #ffffff !important;
+}
+
+.brand{
+  font-weight: 800;
+  font-size: 32px;
+  color: #394867;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.brand:hover{
+  color: #212A3E;
+}
+
+.home{
+  background-color: #F1F6F9;
+}
+
+.title-home{
+  height: 250px;
+  display: flex;
+  align-items: end;
+  color: #394867;
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 3px;
+}
+
+.text-home{
+  font-size: 1.3rem;
+  line-height: 1.3;
+  letter-spacing: 2px;
+}
+
+.btn-home{
+  background-color: #394867 !important;
+  border: #394867 !important;
+}
+
+.btn-home:hover{
+  background-color: #394867 !important;
+  box-shadow: 0.2px 0.5px 8px 0px #212A3E;
+}
+
+.footer{
+  background-color: #F1F6F9;
+}
