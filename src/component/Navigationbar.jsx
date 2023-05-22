@@ -1,4 +1,6 @@
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navigationbar = () => {
   return (
@@ -6,14 +8,14 @@ const Navigationbar = () => {
       <Navbar className="nav">
         <Container>
           <Navbar.Brand>
-            <a href="" className="brand">
+            <NavLink to="/" className="brand">
               INVLOW
-            </a>
+            </NavLink>
           </Navbar.Brand>
           <Nav>
-            <Nav.Link href="#trending">
+            <NavLink to="/">
                 <Button variant="outline-secondary" className="fw-bolder login-btn">LOGIN</Button>
-            </Nav.Link>
+            </NavLink>
           </Nav>
         </Container>
       </Navbar>

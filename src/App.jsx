@@ -1,29 +1,27 @@
 import { useState } from 'react'
-import Navigationbar from './component/Navigationbar'
-import Footer from './component/Footer'
+import {useRoutes} from 'react-router-dom'
 import Home from './pages/home'
+import Peminjaman from './pages/Peminjaman'
 import "./index.css"
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const routes = useRoutes([
+    {
+      path: '/',
+      element: <Home />
+    },
+    {
+      path: '/peminjaman',
+      element: <Peminjaman />
+    },
+  ])
 
   return (
     <>
-    <div className='body'>
-      {/* Navbar */}
-      <Navigationbar/>
-      {/* End Navbar */}
-
-      {/* Home */}
-      <Home/>
-      {/* Home */}
-
-      {/* footer */}
-      <Footer/>
-      {/* End footer */}
-    </div>
+      {routes}
     </>
+
   )
 }
 
