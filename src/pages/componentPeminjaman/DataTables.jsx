@@ -10,25 +10,26 @@ import {
   TablePagination,
 } from '@mui/material';
 import { Button, Container } from 'react-bootstrap';
+import { CheckLg, CloudPlusFill, Trash } from "react-bootstrap-icons";
 
 const data = [
-  { id: 1, name: 'John Doe', age: 30 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
-  { id: 2, name: 'Jane Smith', age: 25 },
+  { id: 1, name: 'John Doe', age: "2/25/2002", },
+  { id: 2, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 3, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 4, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 5, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 6, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 7, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 8, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 9, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 10, name: 'Jane Smith', age:  "2/25/2002" },
+  { id: 11, name: 'Jane Smith', age:  "2/25/2002" },
   // ...
 ];
 
 const DataTables = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -47,9 +48,10 @@ const DataTables = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Age</TableCell>
+              <TableCell>No</TableCell>
+              <TableCell>Barang</TableCell>
+              <TableCell>Peminjam</TableCell>
+              <TableCell>Tanggal/Waktu Pinjam</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -58,12 +60,15 @@ const DataTables = () => {
               <TableRow key={row.id}>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
+                <TableCell>{row.name}</TableCell>
                 <TableCell>{row.age}</TableCell>
                 <TableCell>
                   <Button variant="primary" className="me-2">
-                    asd
+                    <CheckLg />
                   </Button>
-                  <Button variant="danger">asd</Button>
+                  <Button variant="danger">
+                    <Trash/>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

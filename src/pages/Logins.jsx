@@ -1,6 +1,14 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useNavigate } from "react-router-dom";
-import { Card, Col, Container, Form, Row, InputGroup, Button } from "react-bootstrap";
+import {
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+  InputGroup,
+  Button,
+} from "react-bootstrap";
 import "../assets/css/theme.css";
 const Logins = () => {
   const navigate = useNavigate();
@@ -21,7 +29,9 @@ const Logins = () => {
                     autoplay
                     style={{ width: "75%" }}
                   />
-                  <p className="text-muted text-center">Please enter your user information.</p>
+                  <p className="text-muted text-center">
+                    Please enter your user information.
+                  </p>
                 </div>
                 <Form className="p-2">
                   <Row className="mb-3">
@@ -35,21 +45,19 @@ const Logins = () => {
                         required
                         type="text"
                         placeholder="Username"
-                        defaultValue="Mark"
                       />
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group
                       className="mb-4"
                       md="4"
-                      controlId="validationCustom01"
+                      controlId="validationCustom02"
                     >
-                      <Form.Label>First name</Form.Label>
+                      <Form.Label>Password</Form.Label>
                       <Form.Control
                         required
                         type="text"
-                        placeholder="First name"
-                        defaultValue="Mark"
+                        placeholder="Passoword"
                       />
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
@@ -57,11 +65,12 @@ const Logins = () => {
                       <Form.Check
                         required
                         label="Show Password"
-                        feedback="You must agree before submitting."
                         feedbackType="invalid"
                       />
                     </Form.Group>
-                    <Button className="btn-home" onClick={() => navigate('/')}>Sign In</Button>
+                    <Button className="btn-home" onClick={() => navigate("/")}>
+                      Sign In
+                    </Button>
                   </Row>
                 </Form>
               </Card.Body>
