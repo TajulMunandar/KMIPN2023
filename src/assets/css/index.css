@@ -65,4 +65,17 @@
 
 .footer{
   background-color: #F1F6F9;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+.peminjaman{
+  background-color: #F1F6F9;
+  height: 100vh;
+}
+
+.text-card-peminjaman{
+  color: #394867;
 }

@@ -13,7 +13,7 @@ const Navigationbar = () => {
             </NavLink>
           </Navbar.Brand>
           <Nav>
-            <NavLink to="/">
+            <NavLink to="/login">
                 <Button variant="outline-secondary" className="fw-bolder login-btn">LOGIN</Button>
             </NavLink>
           </Nav>

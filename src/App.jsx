@@ -2,7 +2,8 @@ import { useState } from 'react'
 import {useRoutes} from 'react-router-dom'
 import Home from './pages/home'
 import Peminjaman from './pages/Peminjaman'
-import "./index.css"
+import Logins from './pages/Logins'
+import "./assets/css/index.css"
 
 
 function App() {
@@ -14,6 +15,10 @@ function App() {
     {
       path: '/peminjaman',
       element: <Peminjaman />
+    },
+    {
+      path: '/login',
+      element: <Logins />
     },
   ])
 
