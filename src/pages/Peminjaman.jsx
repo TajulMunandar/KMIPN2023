@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navigationbar from "../component/Navigationbar";
 import Footer from "../component/Footer";
-import { Container, Button, Card, Row, Col, Modal } from "react-bootstrap";
+import { Container, Button, Card, Row, Col, Modal, Form } from "react-bootstrap";
 import { CloudPlusFill } from "react-bootstrap-icons";
 import DataTables from "./componentPeminjaman/DataTables";
 
@@ -43,7 +43,38 @@ const Peminjaman = () => {
         <Modal.Header closeButton>
           <Modal.Title>Peminjaman</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+        <Form className="p-2">
+                  <Row className="mb-3">
+                    <Form.Group
+                      className="mb-4"
+                      md="4"
+                      controlId="validationCustom01"
+                    >
+                      <Form.Label>Barang</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Barang"
+                      />
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group
+                      className="mb-4"
+                      md="4"
+                      controlId="validationCustom02"
+                    >
+                      <Form.Label>Peminjam</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Peminjam"
+                      />
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    </Form.Group>
+                  </Row>
+                </Form>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Tutup

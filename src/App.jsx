@@ -1,16 +1,16 @@
-import { useState } from 'react'
+import { lazy } from 'react'
 import {useRoutes} from 'react-router-dom'
-import Home from './pages/home'
+// import Home from './pages/home'
 import Peminjaman from './pages/Peminjaman'
 import Logins from './pages/Logins'
 import "./assets/css/index.css"
-
+const Home = lazy(() => import('./pages/Home'))
 
 function App() {
   const routes = useRoutes([
     {
       path: '/',
-      element: <Home />
+      element:<Home />
     },
     {
       path: '/peminjaman',

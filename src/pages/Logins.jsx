@@ -57,7 +57,7 @@ const Logins = () => {
                       <Form.Control
                         required
                         type="text"
-                        placeholder="Passoword"
+                        placeholder="Password"
                       />
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
