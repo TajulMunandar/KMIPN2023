@@ -6,10 +6,9 @@ import {
   Container,
   Form,
   Row,
-  InputGroup,
   Button,
 } from "react-bootstrap";
-import "../assets/css/theme.css";
+import "/kmipn/kmipn/src/assets/css/theme.css";
 const Logins = () => {
   const navigate = useNavigate();
   return (
@@ -68,7 +67,7 @@ const Logins = () => {
                         feedbackType="invalid"
                       />
                     </Form.Group>
-                    <Button className="btn-home" onClick={() => navigate("/")}>
+                    <Button className="btn-home" onClick={() => navigate("/dashboard")}>
                       Sign In
                     </Button>
                   </Row>
@@ -83,17 +82,3 @@ const Logins = () => {
 };
 
 export default Logins;
-
-//robot
-
-{
-  /* <Player
-                    src="https://assets5.lottiefiles.com/packages/lf20_GbabwrUY2k.json"
-                    background="transparent"
-                    speed="1"
-                    loop
-                    controls
-                    autoplay
-                    style={{ width: "75%" }}
-                  /> */
-}

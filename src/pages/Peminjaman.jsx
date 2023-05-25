@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Navigationbar from "../component/Navigationbar";
-import Footer from "../component/Footer";
+import Navigationbar from "../component/main/Navigationbar";
+import Footer from "../component/main/Footer";
 import { Container, Button, Card, Row, Col, Modal, Form } from "react-bootstrap";
 import { CloudPlusFill } from "react-bootstrap-icons";
 import DataTables from "./componentPeminjaman/DataTables";
+import "/kmipn/kmipn/src/assets/css/main/index.css";
 
 const Peminjaman = () => {
   const [show, setShow] = useState(false);

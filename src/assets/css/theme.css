@@ -72,6 +72,14 @@
   right: 2;
 }
 
+.bg-dashboard{
+  background-color: #F1F6F9;
+}
+
+.user-dashboard{
+  text-decoration: none;
+}
+
 .bottom-2 {
   bottom: 2;
 }
@@ -26186,7 +26194,7 @@ textarea.form-control-lg {
 #page-content {
   min-height: 100vh;
   min-width: 100vw;
-  margin-left: 15.625rem;
+  /* margin-left: 15.625rem; */
   transition: margin 0.25s ease-out;
 }
 

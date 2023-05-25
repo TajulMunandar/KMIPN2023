@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Player } from "@lottiefiles/react-lottie-player";
-import Navigationbar from "../component/Navigationbar";
-import Footer from "../component/Footer";
+import Navigationbar from "../component/main/Navigationbar";
+import Footer from "../component/main/Footer";
+import "/kmipn/kmipn/src/assets/css/main/index.css";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
