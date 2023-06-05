@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { TypeAnimation } from "react-type-animation";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -26,7 +27,7 @@ const Home = () => {
             loop
             controls
             autoplay
-            style={{ width:"50%" }}
+            style={{ width: "50%" }}
           />
         ) : (
           <>
@@ -35,7 +36,25 @@ const Home = () => {
               <Container>
                 <Row className="d-flex">
                   <Col>
-                    <div className="title-home">INVENTORY FLOW</div>
+                    <div className="title-home">
+                      <TypeAnimation
+                        sequence={[
+                          "INVLOW", 
+                          1000, 
+                          "INVENTORY FLOW", 
+                          2000, 
+                          "INVENTARISASI KOMINFO", 
+                          3000,
+                          () => {
+                            console.log("Sequence completed"); // Place optional callbacks anywhere in the array
+                          },
+                        ]}
+                        wrapper="span"
+                        cursor={true}
+                        repeat={Infinity}
+                        style={{ display: "inline-block" }}
+                      />
+                    </div>
                     <div className="text-home mt-3">
                       Sistem Inventarisasi dan Peminjaman Barang pada Dinas
                       Komunikasi dan Informatika Provinsi Sumatera Utara
