@@ -5,9 +5,14 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { Player } from "@lottiefiles/react-lottie-player";
 import Navigationbar from "../component/main/Navigationbar";
 import Footer from "../component/main/Footer";
+import AOS from "aos";
+import "aos/dist/aos.css"
 import "/kmipn/kmipn/src/assets/css/main/index.css";
 
 const Home = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
@@ -36,7 +41,7 @@ const Home = () => {
               <Container>
                 <Row className="d-flex">
                   <Col>
-                    <div className="title-home">
+                    <div className="title-home" data-aos="fade-right" data-aos-duration="1000">
                       <TypeAnimation
                         sequence={[
                           "INVLOW", 
@@ -55,11 +60,11 @@ const Home = () => {
                         style={{ display: "inline-block" }}
                       />
                     </div>
-                    <div className="text-home mt-3">
+                    <div className="text-home mt-3" data-aos="fade-right" data-aos-duration="1000">
                       Sistem Inventarisasi dan Peminjaman Barang pada Dinas
                       Komunikasi dan Informatika Provinsi Sumatera Utara
                     </div>
-                    <div className="mt-3 mb-3">
+                    <div className="mt-3 mb-3" data-aos="fade-right" data-aos-duration="1000">
                       <Button
                         className="btn-home"
                         onClick={() => navigate("/peminjaman")}
@@ -68,7 +73,7 @@ const Home = () => {
                       </Button>
                     </div>
                   </Col>
-                  <Col>
+                  <Col >  
                     <Player
                       src="https://assets2.lottiefiles.com/packages/lf20_9wpyhdzo.json"
                       background="transparent"
@@ -76,12 +81,13 @@ const Home = () => {
                       loop
                       controls
                       autoplay
+                     
                     />
                   </Col>
                 </Row>
               </Container>
             </div>
-            <Footer />
+            <Footer data-aos="fade-down" data-aos-duration="1000" />
           </>
         )}
       </div>

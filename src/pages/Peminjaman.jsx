@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigationbar from "../component/main/Navigationbar";
 import Footer from "../component/main/Footer";
 import { Container, Button, Card, Row, Col, Modal, Form } from "react-bootstrap";
 import { CloudPlusFill } from "react-bootstrap-icons";
 import DataTables from "./componentPeminjaman/DataTables";
 import "/kmipn/kmipn/src/assets/css/main/index.css";
+import AOS from "aos";
+import "aos/dist/aos.css"
 
 const Peminjaman = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -15,11 +21,11 @@ const Peminjaman = () => {
     <>
       <div className="peminjaman">
         <Navigationbar />
-        <Container>
-          <Card style={{ width: "100%" }}>
+        <Container >
+          <Card style={{ width: "100%" }} data-aos="fade-up" data-aos-duration="1000">
             <Card.Body>
-              <Row className="d-flex">
-                <Col className="d-flex align-items-end">
+              <Row className="d-flex" data-aos="fade-up">
+                <Col className="d-flex align-items-end" data-aos="fade-down">
                   <Card.Title className="fw-bold text-card-peminjaman">
                     {" "}
                     PEMINJAMAN
@@ -40,7 +46,7 @@ const Peminjaman = () => {
         <Footer />
       </div>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} data-aos="fade-up">
         <Modal.Header closeButton>
           <Modal.Title>Peminjaman</Modal.Title>
         </Modal.Header>

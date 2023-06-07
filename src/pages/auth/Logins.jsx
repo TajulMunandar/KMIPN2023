@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,14 +10,21 @@ import {
   Button,
 } from "react-bootstrap";
 import "/kmipn/kmipn/src/assets/css/theme.css";
+import AOS from "aos";
+import "aos/dist/aos.css"
+
 const Logins = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   const navigate = useNavigate();
   return (
-    <div className="body">
+    <div className="body" >
       <Container className="d-flex flex-column">
         <Row className="align-items-center justify-content-center g-0 min-vh-100">
           <Col className="col-12 col-md-8 col-lg-6 col-xxl-4 py-8 py-xl-0">
-            <Card className="smooth-shadow-md">
+            <Card className="smooth-shadow-md" data-aos="zoom-out-down" data-aos-duration="1000">
               <Card.Body className="p-4">
                 <div>
                   <Player
