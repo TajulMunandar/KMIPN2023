@@ -1,6 +1,11 @@
 import { lazy } from 'react'
 import {useRoutes} from 'react-router-dom'
-// import Home from './pages/home'
+
+// route
+import UserDashboard from './pages/dashboard/UserDashboard'
+import KategoriDashboard from './pages/dashboard/KategoriDashboard'
+import BarangLaporan from './pages/dashboard/laporan/BarangLaporan'
+import PeminjamanLaporan from './pages/dashboard/laporan/PeminjamanLaporan'
 import Peminjaman from './pages/Peminjaman'
 import Logins from './pages/auth/Logins'
 import HomeDashboard from './pages/dashboard/HomeDashboard'
@@ -34,6 +39,22 @@ function App() {
     {
       path: '/dashboard-peminjaman',
       element: <PeminjamanDashboard />
+    },
+    {
+      path: '/dashboard-laporan-barang',
+      element: <BarangLaporan/>
+    },
+    {
+      path: '/dashboard-laporan-peminjaman',
+      element: <PeminjamanLaporan/>
+    },
+    {
+      path: '/dashboard-kategori',
+      element: <KategoriDashboard/>
+    },
+    {
+      path: '/dashboard-user',
+      element: <UserDashboard/>
     },
   ])
 

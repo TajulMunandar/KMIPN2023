@@ -1,9 +1,15 @@
 import {Nav, Image} from "react-bootstrap"
 import { NavLink } from "react-router-dom"
+import React, { useState } from 'react';
 
 const Sidebar = () =>{
+    const [isDropdownActive, setIsDropdownActive] = useState(false);
+  
+    const toggleDropdown = () => {
+        setIsDropdownActive(prevState => !prevState);
+    };
     return(
-            <Nav className="navbar-vertical navbar">
+            <Nav className="navbar-vertical navbar" style={{ background: "#0fa39b" }}>
                 <div className="nav-scroller">
                 {/* Brand logo  */}
                 <NavLink className="navbar-brand text-center" to="/dashboard">
@@ -34,13 +40,14 @@ const Sidebar = () =>{
                     </li>
 
                 <li className="nav-item">
-                    <a className={`nav-link has-arrow ${window.location.pathname.includes('/dashboard-laporan') ? '' : 'collapsed'}`} href="#!" data-bs-toggle="collapse" data-bs-target="#navLaporan" aria-expanded="false" aria-controls="navLaporan">
+                    <a className={`nav-link has-arrow ${isDropdownActive ? '' : 'collapsed'}`} href="#!"
+                        onClick={toggleDropdown} data-bs-toggle="collapse" data-bs-target="#navLaporan" aria-expanded="false" aria-controls="navLaporan">
                         <i className="fa-solid fa-book me-2 fa-fw"></i>
                         Laporan
                     </a>
 
-                    <div id="navLaporan" className={`collapse ${window.location.pathname.includes('/dashboard-laporan') ? 'show' : ''}`} data-bs-parent="#sideNavbar">
-                    <ul className="nav flex-column">
+                    <div id="navLaporan" className={`collapse ${isDropdownActive ? 'show' : ''} ${window.location.pathname.includes('/dashboard-laporan') ? 'show' : ''} `} data-bs-parent="#sideNavbar">
+                    <ul className="nav flex-column" style={{ background: "#0fa39b" }}>
                         <li className="nav-item">
                         <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-laporan-barang') ? 'active' : ''}`} to="/dashboard-laporan-barang">
                             Laporan Barang
@@ -60,14 +67,14 @@ const Sidebar = () =>{
                     </li>
 
                     <li className="nav-item">
-                    <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard/kategori') ? 'active' : ''}`} to="/dashboard/kategori">
+                    <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-kategori') ? 'active' : ''}`} to="/dashboard-kategori">
                         <i className="fa-regular nav-icon fa-list me-2 fa-fw"></i>
                         Kategori
                     </NavLink>
                     </li>
 
                     <li className="nav-item">
-                    <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard/User') ? 'active' : ''}`} to="/dashboard/user">
+                    <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-user') ? 'active' : ''}`} to="/dashboard-user">
                         <i className="fa-solid fa-user me-2 fa-fw"></i>
                         User
                     </NavLink>
