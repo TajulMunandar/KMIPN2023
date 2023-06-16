@@ -1,7 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 import Main from "../../component/dashboard/Main";
 
-
 const categories = [
   { name: 'Kategori 1', itemCount: 5 },
   { name: 'Kategori 2', itemCount: 3 },
@@ -13,8 +12,8 @@ const categories = [
   { name: 'Kategori 8', itemCount: 2 },
 ];
 
-
 const HomeDashboard = () => {
+
   return (
     <Main title="DASHBOARD" pageHeading={"Dashboard"}>
       <Row>

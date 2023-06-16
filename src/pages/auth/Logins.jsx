@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -14,11 +15,43 @@ import AOS from "aos";
 import "aos/dist/aos.css"
 
 const Logins = () => {
+
   useEffect(() => {
     AOS.init();
   }, []);
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  axios.defaults.withCredentials = true;
+  const handelLogin = async (event) => {
+    event.preventDefault();
+    axios.post('http://localhost:8000/login',{username, password})
+    .then(res => {
+      if(res.data.Login){
+        navigate("/dashboard")
+      }else{
+        alert("no record")
+      }
+      console.log(res);
+    })
+    .catch(err => console.log(err));
+  };
+
+  useEffect(() =>{
+    axios.get('http://localhost:8000/dashboard')
+    .then(res => {
+      if(res.data.valid){
+        navigate('/dashboard')
+      }else{
+        navigate('/login')
+      }
+    })
+    .catch(err => console.log(err))
+  }, [])
+
+  
   return (
     <div className="body" >
       <Container className="d-flex flex-column">
@@ -40,7 +73,7 @@ const Logins = () => {
                     Please enter your user information.
                   </p>
                 </div>
-                <Form className="p-2">
+                <Form className="p-2" onSubmit={handelLogin}>
                   <Row className="mb-3">
                     <Form.Group
                       className="mb-4"
@@ -51,6 +84,9 @@ const Logins = () => {
                       <Form.Control
                         required
                         type="text"
+                        name="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         placeholder="Username"
                       />
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -63,19 +99,21 @@ const Logins = () => {
                       <Form.Label>Password</Form.Label>
                       <Form.Control
                         required
-                        type="text"
+                        type="password"
+                        value={password}
+                        name="password"
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
                       />
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Check
-                        required
                         label="Show Password"
                         feedbackType="invalid"
                       />
                     </Form.Group>
-                    <Button className="btn-home" onClick={() => navigate("/dashboard")}>
+                    <Button type="submit" className="btn-home">
                       Sign In
                     </Button>
                   </Row>
