@@ -9,11 +9,11 @@ const Sidebar = () =>{
         setIsDropdownActive(prevState => !prevState);
     };
     return(
-            <Nav className="navbar-vertical navbar" style={{ background: "#0fa39b" }}>
+            <Nav className="navbar-vertical navbar" style={{ background: "#394867" }}>
                 <div className="nav-scroller">
                 {/* Brand logo  */}
                 <NavLink className="navbar-brand text-center" to="/dashboard">
-                    <Image className="logo-brand" src="../../../public/images/logo.png" alt="diskominfo sumut" style={{ width: "80%" }}  />
+                    <Image className="logo-brand" src="../../../public/images/il.png" alt="" style={{ width: "80%" }}  />
                 </NavLink>
 
                 {/* Navbar nav  */}
@@ -21,21 +21,14 @@ const Sidebar = () =>{
                     <li className="nav-item">
                     <NavLink className={`nav-link has-arrow ${window.location.pathname === '/dashboard' ? 'active' : ''}`} to="/dashboard">
                         <i className="fa-regular nav-icon fa-house me-2 fa-fw"></i>
-                        Dashboard
-                    </NavLink>
-                    </li>
-
-                    <li className="nav-item">
-                    <NavLink className={`nav-link has-arrow ${window.location.pathname === '/dashboard-barang' ? 'active' : ''}`} to="/dashboard-barang">
-                        <i className="fa-solid fa-box-open me-2 fa-fw"></i>
-                        Barang
+                        Dashboards
                     </NavLink>
                     </li>
 
                     <li className="nav-item">
                     <NavLink className={`nav-link has-arrow ${window.location.pathname.includes('/dashboard-peminjaman')? 'active' : ''}`} to="/dashboard-peminjaman">
                         <i className="fa-solid fa-calendar-week me-2 fa-fw"></i>
-                        Peminjaman
+                        Loan
                     </NavLink>
                     </li>
 
@@ -43,19 +36,19 @@ const Sidebar = () =>{
                     <a className={`nav-link has-arrow ${isDropdownActive ? '' : 'collapsed'}`} href="#!"
                         onClick={toggleDropdown} data-bs-toggle="collapse" data-bs-target="#navLaporan" aria-expanded="false" aria-controls="navLaporan">
                         <i className="fa-solid fa-book me-2 fa-fw"></i>
-                        Laporan
+                        Report
                     </a>
 
                     <div id="navLaporan" className={`collapse ${isDropdownActive ? 'show' : ''} ${window.location.pathname.includes('/dashboard-laporan') ? 'show' : ''} `} data-bs-parent="#sideNavbar">
-                    <ul className="nav flex-column" style={{ background: "#0fa39b" }}>
+                    <ul className="nav flex-column" style={{ background: "#394867" }}>
                         <li className="nav-item">
                         <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-laporan-barang') ? 'active' : ''}`} to="/dashboard-laporan-barang">
-                            Laporan Barang
+                            Items Report
                         </NavLink>
                         </li>
                         <li className="nav-item">
                         <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-laporan-peminjaman') ? 'active' : ''}`} to="/dashboard-laporan-peminjaman">
-                            Laporan Peminjaman
+                            Loan Report
                         </NavLink>
                         </li>
                     </ul>
@@ -66,10 +59,17 @@ const Sidebar = () =>{
                         <hr className=" nav-link text-white p-0" />
                     </li>
 
+                     <li className="nav-item">
+                    <NavLink className={`nav-link has-arrow ${window.location.pathname === '/dashboard-barang' ? 'active' : ''}`} to="/dashboard-barang">
+                        <i className="fa-solid fa-box-open me-2 fa-fw"></i>
+                        Items
+                    </NavLink>
+                    </li>
+
                     <li className="nav-item">
                     <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-kategori') ? 'active' : ''}`} to="/dashboard-kategori">
                         <i className="fa-regular nav-icon fa-list me-2 fa-fw"></i>
-                        Kategori
+                        Categories
                     </NavLink>
                     </li>
 

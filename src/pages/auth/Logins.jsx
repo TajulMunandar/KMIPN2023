@@ -21,7 +21,17 @@ const Logins = () => {
   }, []);
 
   const [username, setUsername] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  
+  const handleCheckboxChange = () => {
+    setShowPassword(!showPassword);
+  };
+
+
+  
+ 
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
@@ -99,7 +109,7 @@ const Logins = () => {
                       <Form.Label>Password</Form.Label>
                       <Form.Control
                         required
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={password}
                         name="password"
                         onChange={(e) => setPassword(e.target.value)}
@@ -109,6 +119,8 @@ const Logins = () => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Check
+                       checked={showPassword}
+                       onChange={handleCheckboxChange}
                         label="Show Password"
                         feedbackType="invalid"
                       />

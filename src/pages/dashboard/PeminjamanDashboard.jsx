@@ -5,7 +5,7 @@ import Main from "../../component/dashboard/Main";
 const PeminjamanDashboard = () => {
   
   return (
-    <Main title="Tabel Peminjaman" pageHeading={"Tabel Peminjaman"}>
+    <Main title="Loan Table" pageHeading={"Loan Table"} bread={"Loan"}>
       <Container>
         <Button className="fw-normal mb-1 mt-3">
           <i class="fa-solid fa-square-plus fs-6 "></i> Tambah

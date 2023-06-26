@@ -48,8 +48,6 @@ const Home = () => {
                           1000, 
                           "INVENTORY FLOW", 
                           2000, 
-                          "INVENTARISASI KOMINFO", 
-                          3000,
                           () => {
                             console.log("Sequence completed"); // Place optional callbacks anywhere in the array
                           },
@@ -60,16 +58,16 @@ const Home = () => {
                         style={{ display: "inline-block" }}
                       />
                     </div>
-                    <div className="text-home mt-3" data-aos="fade-right" data-aos-duration="1000">
-                      Sistem Inventarisasi dan Peminjaman Barang pada Dinas
-                      Komunikasi dan Informatika Provinsi Sumatera Utara
+                    <div className="text-home mt-3 lh-base" data-aos="fade-right" data-aos-duration="1000">
+                    Inventory System and Borrowing Items in Infinite Learning
+                    Streamline your access to educational resources with Infinite Learning's inventory system. Explore, borrow, and stay informed with real-time updates.
                     </div>
-                    <div className="mt-3 mb-3" data-aos="fade-right" data-aos-duration="1000">
+                    <div className="mt-3" data-aos="fade-right" data-aos-duration="1000">
                       <Button
                         className="btn-home"
                         onClick={() => navigate("/peminjaman")}
                       >
-                        MULAI
+                        START
                       </Button>
                     </div>
                   </Col>

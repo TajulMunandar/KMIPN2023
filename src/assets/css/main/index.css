@@ -37,7 +37,7 @@
 }
 
 .title-home{
-  height: 250px;
+  height: 235px;
   display: flex;
   align-items: end;
   color: #394867;
@@ -48,9 +48,10 @@
 }
 
 .text-home{
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   line-height: 1.3;
   letter-spacing: 2px;
+  text-align: justify;
 }
 
 .btn-home{

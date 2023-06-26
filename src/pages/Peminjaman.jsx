@@ -52,7 +52,7 @@ const Peminjaman = () => {
                 <Col className="d-flex align-items-end" data-aos="fade-down">
                   <Card.Title className="fw-bold text-card-peminjaman">
                     {" "}
-                    PEMINJAMAN
+                    LOAN
                   </Card.Title>
                 </Col>
                 <Col className="text-end">
@@ -75,7 +75,7 @@ const Peminjaman = () => {
 
       <Modal show={show} onHide={handleClose} data-aos="fade-up">
         <Modal.Header closeButton>
-          <Modal.Title>Peminjaman</Modal.Title>
+          <Modal.Title>Manual Mode</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="p-2">
@@ -113,7 +113,7 @@ const Peminjaman = () => {
 
       <Modal show={shows} onHide={handleCloses} data-aos="fade-up">
         <Modal.Header closeButton>
-          <Modal.Title>Peminjaman QR</Modal.Title>
+          <Modal.Title>QR Mode</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="p-2">
