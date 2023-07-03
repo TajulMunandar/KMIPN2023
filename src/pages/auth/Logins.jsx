@@ -37,7 +37,7 @@ const Logins = () => {
   axios.defaults.withCredentials = true;
   const handelLogin = async (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/login',{username, password})
+    axios.post('http://localhost:3000/login', {username, password})
     .then(res => {
       if(res.data.Login){
         navigate("/dashboard")
@@ -50,7 +50,7 @@ const Logins = () => {
   };
 
   useEffect(() =>{
-    axios.get('http://localhost:8000/dashboard')
+    axios.get('http://localhost:3000/dashboard')
     .then(res => {
       if(res.data.valid){
         navigate('/dashboard')

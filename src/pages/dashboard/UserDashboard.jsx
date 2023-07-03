@@ -1,4 +1,4 @@
-import {Container, Button, Row, Col} from "react-bootstrap"
+import {Container, Button, Row, Col, Card} from "react-bootstrap"
 import React, { useState } from 'react';
 import Main from "../../component/dashboard/Main";
 import {
@@ -49,16 +49,17 @@ const UserDashboard = () => {
         <Button className="fw-normal mb-1 mt-3">
           <i class="fa-solid fa-square-plus fs-6 "></i> Tambah
         </Button>
-        <Row className="mt-3">
+        <Row className="mt-3 mb-5">
             <Col>
+            <Card className="p-3">
             <TableContainer style={{ height: 490, width: '100%' }} component={Paper}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell className="fw-bold">No</TableCell>
-              <TableCell className="fw-bold">Barang</TableCell>
-              <TableCell className="fw-bold">Peminjam</TableCell>
-              <TableCell className="fw-bold">Tanggal/Waktu Pinjam</TableCell>
+              <TableCell className="fw-bold">Nama</TableCell>
+              <TableCell className="fw-bold">Username</TableCell>
+              <TableCell className="fw-bold">Role</TableCell>
               <TableCell className="fw-bold">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -91,6 +92,7 @@ const UserDashboard = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      </Card>
             </Col>
         </Row>
       </Container>

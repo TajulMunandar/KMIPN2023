@@ -1,5 +1,4 @@
 import { Button, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ const Navibar = () => {
 
   axios.defaults.withCredentials = true;
   useEffect(() =>{
-    axios.get('http://localhost:8000/dashboard')
+    axios.get('http://localhost:3000/dashboard')
     .then(res => {
         if(res.data.valid){
             setName(res.data.username)
@@ -23,7 +22,7 @@ const Navibar = () => {
   }, [])
 
   const handleLogout = () =>{
-    axios.get('http://localhost:8000/logout')
+    axios.get('http://localhost:3000/logout')
     .then(res =>{
         if(res.data.valid == false){
             location.reload(true);
@@ -42,6 +41,7 @@ const Navibar = () => {
                 <div className="p-1 text-black fw-semibold p-2">
                     <i className="fa-solid fa-user mx-1"></i>
                     {name}
+                    
                 </div>
             </Button>
             <div className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">

@@ -67,11 +67,13 @@ const BarangLaporan = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell className="fw-bold">No</TableCell>
+                      <TableCell className="fw-bold">Kode Barang</TableCell>
+                      <TableCell className="fw-bold">Kategori</TableCell>
                       <TableCell className="fw-bold">Barang</TableCell>
-                      <TableCell className="fw-bold">Peminjam</TableCell>
-                      <TableCell className="fw-bold">
-                        Tanggal/Waktu Pinjam
-                      </TableCell>
+                      <TableCell className="fw-bold">Serial Number</TableCell>
+                      <TableCell className="fw-bold">Tahun Pengadaan</TableCell>
+                      <TableCell className="fw-bold">Kondisi</TableCell>
+                      <TableCell className="fw-bold">Ket</TableCell>
                       <TableCell className="fw-bold">Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -79,6 +81,10 @@ const BarangLaporan = () => {
                     {displayedRows.map((row) => (
                       <TableRow key={row.id}>
                         <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.name}</TableCell>
                         <TableCell>{row.name}</TableCell>
                         <TableCell>{row.name}</TableCell>
                         <TableCell>{row.age}</TableCell>

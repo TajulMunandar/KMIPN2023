@@ -62,11 +62,11 @@ const PeminjamanLaporan = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell className="fw-bold">No</TableCell>
-                      <TableCell className="fw-bold">Barang</TableCell>
+                      <TableCell className="fw-bold">Tgl Pinjam</TableCell>
+                      <TableCell className="fw-bold">Tgl Kembali</TableCell>
                       <TableCell className="fw-bold">Peminjam</TableCell>
-                      <TableCell className="fw-bold">
-                        Tanggal/Waktu Pinjam
-                      </TableCell>
+                      <TableCell className="fw-bold">Barang</TableCell>
+                      <TableCell className="fw-bold">Ket</TableCell>
                       <TableCell className="fw-bold">Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -74,6 +74,8 @@ const PeminjamanLaporan = () => {
                     {displayedRows.map((row) => (
                       <TableRow key={row.id}>
                         <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.age}</TableCell>
+                        <TableCell>{row.age}</TableCell>
                         <TableCell>{row.name}</TableCell>
                         <TableCell>{row.name}</TableCell>
                         <TableCell>{row.age}</TableCell>
