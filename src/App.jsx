@@ -1,4 +1,3 @@
-import { lazy } from 'react'
 import {useRoutes} from 'react-router-dom'
 
 // route
@@ -10,6 +9,7 @@ import Peminjaman from './pages/Peminjaman'
 import Logins from './pages/auth/Logins'
 import HomeDashboard from './pages/dashboard/HomeDashboard'
 import BarangDashboard from './pages/dashboard/BarangDashboard'
+import BarangHabisDashboard from './pages/dashboard/barang/BarangHabisDashboard'
 import PeminjamanDashboard from './pages/dashboard/PeminjamanDashboard'
 import Home from './pages/Home'
 

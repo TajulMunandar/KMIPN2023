@@ -12,9 +12,15 @@ const Navigationbar = () => {
             </NavLink>
           </Navbar.Brand>
           <Nav>
-            <NavLink to="/login">
-                <Button variant="outline-secondary" className="fw-bolder login-btn">LOGIN</Button>
-            </NavLink>
+          {/* {isAuthenticated ? (
+              <span className="fw-bolder">{userData && userData.name}</span>
+            ) : ( */}
+              <NavLink to="/login">
+                <Button variant="outline-secondary" className="fw-bolder login-btn">
+                  LOGIN
+                </Button>
+              </NavLink>
+            {/* )} */}
           </Nav>
         </Container>
       </Navbar>

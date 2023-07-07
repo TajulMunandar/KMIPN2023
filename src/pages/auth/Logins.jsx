@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 import {
   Card,
   Col,
@@ -28,9 +29,6 @@ const Logins = () => {
   const handleCheckboxChange = () => {
     setShowPassword(!showPassword);
   };
-
-
-  
  
   const navigate = useNavigate();
 
@@ -40,11 +38,21 @@ const Logins = () => {
     axios.post('http://localhost:3000/login', {username, password})
     .then(res => {
       if(res.data.Login){
+        Swal.fire({
+          icon: 'success',
+          title: 'Hi, Welcome!!!',
+          showConfirmButton: false,
+          timer: 1500
+        })
         navigate("/dashboard")
       }else{
-        alert("no record")
+        Swal.fire({
+          icon: 'error',
+          title: 'No Record',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
-      console.log(res);
     })
     .catch(err => console.log(err));
   };

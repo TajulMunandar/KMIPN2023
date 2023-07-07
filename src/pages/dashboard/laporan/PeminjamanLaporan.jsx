@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row, Card } from "react-bootstrap";
 import Main from "../../../component/dashboard/Main";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableContainer,
@@ -11,24 +11,31 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { Check } from "react-bootstrap-icons";
+import axios from "axios";
 
-const data = [
-  { id: 1, name: "John Doe", age: "2/25/2002" },
-  { id: 2, name: "Jane Smith", age: "2/25/2002" },
-  { id: 3, name: "Jane Smith", age: "2/25/2002" },
-  { id: 4, name: "Jane Smith", age: "2/25/2002" },
-  { id: 5, name: "Jane Smith", age: "2/25/2002" },
-  { id: 6, name: "Jane Smith", age: "2/25/2002" },
-  { id: 7, name: "Jane Smith", age: "2/25/2002" },
-  { id: 8, name: "Jane Smith", age: "2/25/2002" },
-  { id: 9, name: "Jane Smith", age: "2/25/2002" },
-  { id: 10, name: "Jane Smith", age: "2/25/2002" },
-  { id: 11, name: "Jane Smith", age: "2/25/2002" },
-  // ...
-];
 
 const PeminjamanLaporan = () => {
+
+   // Get Data
+   const [peminjaman, setPeminjaman] = useState([]);
+
+   const fetchPeminjaman = async () => {
+     try {
+       const response = await axios.get(
+         "http://localhost:3000/dashboard/report"
+       );
+       const peminjaman = response.data.data;
+       setPeminjaman(peminjaman);
+     } catch (error) {
+       console.error(error);
+     }
+   };
+ 
+   useEffect(() => {
+     fetchPeminjaman();
+   }, []);
+   // End Get Data
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -41,58 +48,66 @@ const PeminjamanLaporan = () => {
     setPage(0);
   };
 
-  const displayedRows = data.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
   return (
     <Main title="Loan Report Table" pageHeading={"Loan Report Table"} bread={"Loan Report"}>
       <Container>
-        <Button className="fw-normal mb-1 mt-3">
-          <i class="fa-solid fa-square-plus fs-6 "></i> Tambah
-        </Button>
         <Row className="mt-3">
           <Col>
           <Card className="p-3 mb-4">
-              <TableContainer
+          <TableContainer
                 style={{ height: 490, width: "100%" }}
                 component={Paper}
               >
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      <TableCell className="fw-bold">No</TableCell>
-                      <TableCell className="fw-bold">Tgl Pinjam</TableCell>
-                      <TableCell className="fw-bold">Tgl Kembali</TableCell>
-                      <TableCell className="fw-bold">Peminjam</TableCell>
-                      <TableCell className="fw-bold">Barang</TableCell>
-                      <TableCell className="fw-bold">Ket</TableCell>
-                      <TableCell className="fw-bold">Action</TableCell>
+                      <TableCell className="fw-bold text-center">No</TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Items
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Loaner
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Description
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Loan Date
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedRows.map((row) => (
-                      <TableRow key={row.id}>
-                        <TableCell>{row.id}</TableCell>
-                        <TableCell>{row.age}</TableCell>
-                        <TableCell>{row.age}</TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.age}</TableCell>
-                        <TableCell>
-                          <Button variant="success" className="me-2">
-                            <Check />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {peminjaman
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, index) => (
+                        <TableRow key={row._id}>
+                          <TableCell className="text-center">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.barangId.deskripsi}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.userId.name}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.keterangan}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.tanggalPinjam.substring(0, 10)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={data.length}
+                count={peminjaman.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

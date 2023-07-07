@@ -73,6 +73,7 @@ const Peminjaman = () => {
         <Footer />
       </div>
 
+      {/* manual modal */}
       <Modal show={show} onHide={handleClose} data-aos="fade-up">
         <Modal.Header closeButton>
           <Modal.Title>Manual Mode</Modal.Title>
@@ -110,7 +111,9 @@ const Peminjaman = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* end manual modal */}
 
+      {/* qr code modal */}
       <Modal show={shows} onHide={handleCloses} data-aos="fade-up">
         <Modal.Header closeButton>
           <Modal.Title>QR Mode</Modal.Title>
@@ -129,13 +132,11 @@ const Peminjaman = () => {
                 />
               </div>
               <Form.Group
-                className="mb-4"
                 md="4"
                 controlId="validationCustom01"
               >
                 <Form.Label>Barang</Form.Label>
-                <Form.Control required type="text" placeholder="Barang" />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control required type="text" placeholder="Barang" disabled/>
               </Form.Group>
             </Row>
           </Form>
@@ -149,6 +150,7 @@ const Peminjaman = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* end qr modal */}
     </>
   );
 };

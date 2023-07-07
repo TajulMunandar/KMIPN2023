@@ -13,7 +13,7 @@ const Navibar = () => {
     axios.get('http://localhost:3000/dashboard')
     .then(res => {
         if(res.data.valid){
-            setName(res.data.username)
+            setName(res.data.username.username)
           }else{
             navigate('/')
           }

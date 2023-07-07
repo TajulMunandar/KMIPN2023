@@ -2,6 +2,7 @@ import React from "react";
 import "../../assets/css/theme.css";
 import "../../assets/css/dashboard/style.css";
 import { Container, Row, Col, Breadcrumb } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Navibar from "./Navbar";
 
@@ -26,14 +27,14 @@ const Main = ({ title, pageHeading, children, bread }) => {
                 </Breadcrumb>
               )}
               {!isDashboard && !isLaporanBarang && !isLaporanPeminjaman && (
-                <Breadcrumb>
-                  <Breadcrumb.Item className="text-decoration-none" href="/dashboard">Dashboard</Breadcrumb.Item>
+                <Breadcrumb>                 
+                  <Breadcrumb.Item className="text-decoration-none"><Link to="/dashboard">Dashboard </Link></Breadcrumb.Item>
                   <Breadcrumb.Item active>{bread}</Breadcrumb.Item>
                 </Breadcrumb>
               )}
               {(isLaporanBarang || isLaporanPeminjaman) && (
                 <Breadcrumb>
-                  <Breadcrumb.Item href="/dashboard">Dashboard</Breadcrumb.Item>
+                  <Breadcrumb.Item ><Link to="/dashboard">Dashboard</Link></Breadcrumb.Item>
                   <Breadcrumb.Item active>Laporan</Breadcrumb.Item>
                   <Breadcrumb.Item active>{bread}</Breadcrumb.Item>
                 </Breadcrumb>
