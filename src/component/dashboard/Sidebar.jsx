@@ -32,39 +32,23 @@ const Sidebar = () =>{
                     </NavLink>
                     </li>
 
-                <li className="nav-item">
-                    <a className={`nav-link has-arrow ${isDropdownActive ? '' : 'collapsed'}`} href="#!"
-                        onClick={toggleDropdown} data-bs-toggle="collapse" data-bs-target="#navLaporan" aria-expanded="false" aria-controls="navLaporan">
-                        <i className="fa-solid fa-book me-2 fa-fw"></i>
+                    <li className="nav-item">
+                    <NavLink className={`nav-link has-arrow ${window.location.pathname.includes('/dashboard-laporan-peminjaman')? 'active' : ''}`} to="/dashboard-laporan-peminjaman">
+                        <i className="fa-solid fa-memo-pad me-2 fa-fw"></i>
                         Report
-                    </a>
-
-                    <div id="navLaporan" className={`collapse ${isDropdownActive ? 'show' : ''} ${window.location.pathname.includes('/dashboard-laporan') ? 'show' : ''} `} data-bs-parent="#sideNavbar">
-                    <ul className="nav flex-column" style={{ background: "#394867" }}>
-                        <li className="nav-item">
-                        <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-laporan-barang') ? 'active' : ''}`} to="/dashboard-laporan-barang">
-                            Items Report
-                        </NavLink>
-                        </li>
-                        <li className="nav-item">
-                        <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-laporan-peminjaman') ? 'active' : ''}`} to="/dashboard-laporan-peminjaman">
-                            Loan Report
-                        </NavLink>
-                        </li>
-                    </ul>
-                    </div>
-                </li>
+                    </NavLink>
+                    </li>
 
                     <li className="nav-item px-5">
                         <hr className=" nav-link text-white p-0" />
                     </li>
 
-                     <li className="nav-item">
-                    <NavLink className={`nav-link has-arrow ${window.location.pathname === '/dashboard-barang' ? 'active' : ''}`} to="/dashboard-barang">
-                        <i className="fa-solid fa-box-open me-2 fa-fw"></i>
-                        Items
+                    <li className="nav-item">
+                    <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-barang') ? 'active' : ''}`} to="/dashboard-barang">
+                    <i className="fa-solid fa-box-open me-2 fa-fw"></i> Items 
                     </NavLink>
                     </li>
+                    
 
                     <li className="nav-item">
                     <NavLink className={`nav-link ${window.location.pathname.includes('/dashboard-kategori') ? 'active' : ''}`} to="/dashboard-kategori">

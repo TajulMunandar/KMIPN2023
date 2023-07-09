@@ -309,6 +309,7 @@ const UserDashboard = () => {
               <Form.Group className="mb-1">
                 <Form.Label>Role</Form.Label>
                 <Form.Select onChange={handleRoleChange}>
+                  <option value="">Choose Role</option>
                   <option value="true">Admin</option>
                   <option value="false">User</option>
                 </Form.Select>

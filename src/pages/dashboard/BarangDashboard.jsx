@@ -1,7 +1,15 @@
-import { Button, Col, Container, Row, Card, Modal, Form } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Row,
+  Card,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import React, { useState, useEffect, useRef } from "react";
-import * as htmlToImage from "html-to-image"
-import Main from "../../../component/dashboard/Main";
+import * as htmlToImage from "html-to-image";
+import Main from "../../component/dashboard/Main";
 import {
   Table,
   TableContainer,
@@ -18,7 +26,6 @@ import QRCode from "react-qr-code";
 import { Trash, PencilSquare, QrCode } from "react-bootstrap-icons";
 
 const BarangHabisDashboard = () => {
-  
   // Get Data
   const [barang, setBarang] = useState([]);
 
@@ -112,7 +119,7 @@ const BarangHabisDashboard = () => {
   const [categoryId, setCategoryId] = useState("");
 
   const handleConditionChange = (e) => {
-    const selectedCondition = e.target.value ;
+    const selectedCondition = e.target.value;
     setKondisi(selectedCondition);
   };
 
@@ -172,8 +179,8 @@ const BarangHabisDashboard = () => {
   };
   // End Modal Edit
 
-   // Edit Data
-   const updateBarang = async (event) => {
+  // Edit Data
+  const updateBarang = async (event) => {
     try {
       event.preventDefault();
       if (selectBarang) {
@@ -186,15 +193,18 @@ const BarangHabisDashboard = () => {
           kondisi: editedKondisi,
           categoryId: editedCategoryId,
         };
-        console.log(itemsData)
-        await axios.put(`http://localhost:3000/dashboard/barang/${selectBarang._id}`, itemsData);
+        console.log(itemsData);
+        await axios.put(
+          `http://localhost:3000/dashboard/barang/${selectBarang._id}`,
+          itemsData
+        );
         fetchBarang();
         editClose();
         Swal.fire({
-          icon: 'success',
-          title: 'Category Has Been Updated',
+          icon: "success",
+          title: "Category Has Been Updated",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       }
     } catch (error) {
@@ -223,20 +233,146 @@ const BarangHabisDashboard = () => {
     const qrCodeElement = qrCodeRef.current;
     console.log(qrCodeElement);
     if (qrCodeElement) {
-      htmlToImage.toPng(qrCodeElement)
+      htmlToImage
+        .toPng(qrCodeElement)
         .then(function (dataUrl) {
-          const link = document.createElement('a');
-          link.download = 'qr_code.png';
+          const link = document.createElement("a");
+          link.download = "qr_code.png";
           link.href = dataUrl;
           link.click();
           qrClose();
         })
         .catch(function (error) {
-          console.error('Error generating QR code:', error);
+          console.error("Error generating QR code:", error);
         });
     }
   };
   // End Modal qr
+
+  // Modal Stock
+  const [show4, setShow4] = useState(false);
+
+  const stockClose = () => {
+    setShow4(false);
+  };
+
+  const stockShow = (barang) => {
+    setShow4(true);
+  };
+  //
+
+  // form dinamis
+  const [typeItems, setTypeItems] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
+
+  const handleTypeItemsChange = (e) => {
+    setTypeItems(e.target.value);
+  };
+
+  const handleAdditionalFieldChange = (e) => {
+    setAdditionalField(e.target.value);
+  };
+
+  const renderAdditionalField = () => {
+    if (typeItems === "Disposable") {
+      return (
+        <Form.Group>
+          <Form.Label>Additional Field</Form.Label>
+          <Form.Control
+            type="text"
+            value={additionalField}
+            onChange={handleAdditionalFieldChange}
+            placeholder="Additional Field"
+          />
+        </Form.Group>
+      );
+    } else if (typeItems === "Not Disposable") {
+      return (
+        <Form onSubmit={addBarang}>
+          <Row>
+            <Form.Group className="mb-1">
+              <Form.Label>Items</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="deskripsi"
+                value={deskripsi}
+                onChange={(e) => setDeskripsi(e.target.value)}
+                placeholder="Items"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Code</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="kode"
+                value={kode}
+                onChange={(e) => setKode(e.target.value)}
+                placeholder="Code"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Serial Number</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                name="serialNumber"
+                value={serialNumber}
+                onChange={(e) => setSerialNumber(e.target.value)}
+                placeholder="Serial Number"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Years</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                name="tahun"
+                value={tahun}
+                onChange={(e) => setTahun(e.target.value)}
+                placeholder="Years"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="keterangan"
+                value={keterangan}
+                onChange={(e) => setKeterangan(e.target.value)}
+                placeholder="Description"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Condition</Form.Label>
+              <Form.Select onChange={handleConditionChange}>
+                <option value="">Choose Condition</option>
+                <option value="Good">Good</option>
+                <option value="Broken">Broken</option>
+                <option value="Middle">Middle</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Category</Form.Label>
+              <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
+                <option value="">Choose Category</option>
+                {category.map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Row>
+        </Form>
+      );
+    } else {
+      return null;
+    }
+  };
+  // end form dinamis
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -256,7 +392,10 @@ const BarangHabisDashboard = () => {
         <Button className="fw-normal mb-1 mt-3 me-2" onClick={tambahShow}>
           <i class="fa-solid fa-square-plus fs-6 "></i> Add Items
         </Button>
-        <Button className="fw-normal mb-1 mt-3 btn-info text-white" onClick={tambahShow}>
+        <Button
+          className="fw-normal mb-1 mt-3 btn-info text-white"
+          onClick={stockShow}
+        >
           <i class="fa-solid fa-square-plus fs-6 "></i> Add Stock
         </Button>
         <Row className="mt-3 mb-5">
@@ -312,8 +451,12 @@ const BarangHabisDashboard = () => {
                             {row.deskripsi}
                           </TableCell>
                           <TableCell className="text-center">
-                            <span className={`badge ${row.status ? 'bg-danger' : 'bg-success'}`}>
-                            {row.status ? "Di-Pinjam" : "Tersedia"}
+                            <span
+                              className={`badge ${
+                                row.status ? "bg-danger" : "bg-success"
+                              }`}
+                            >
+                              {row.status ? "Di-Pinjam" : "Tersedia"}
                             </span>
                           </TableCell>
                           <TableCell className="text-center">
@@ -335,14 +478,18 @@ const BarangHabisDashboard = () => {
                             {row.keterangan}
                           </TableCell>
                           <TableCell className="text-center">
-                          <Button
+                            <Button
                               variant="primary"
                               onClick={() => qrShow(row)}
                               className="me-1"
                             >
-                              <QrCode/>
+                              <QrCode />
                             </Button>
-                            <Button variant="warning" className="me-1" onClick={() => editShow(row)}>
+                            <Button
+                              variant="warning"
+                              className="me-1"
+                              onClick={() => editShow(row)}
+                            >
                               <PencilSquare />
                             </Button>
                             <Button
@@ -391,91 +538,21 @@ const BarangHabisDashboard = () => {
       </Modal>
       {/* End Modal Hapus */}
 
-      {/* Modal Tambah */}
-      <Modal show={show1} onHide={tambahClose}>
+       {/* Modal Tambah */}
+       <Modal show={show1} onHide={tambahClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={addBarang}>
-            <Row>
-              <Form.Group className="mb-1">
-                <Form.Label>Items</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="deskripsi"
-                  value={deskripsi}
-                  onChange={(e) => setDeskripsi(e.target.value)}
-                  placeholder="Items"
-                />
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Code</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="kode"
-                  value={kode}
-                  onChange={(e) => setKode(e.target.value)}
-                  placeholder="Code"
-                />
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Serial Number</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  name="serialNumber"
-                  value={serialNumber}
-                  onChange={(e) => setSerialNumber(e.target.value)}
-                  placeholder="Serial Number"
-                />
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Years</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  name="tahun"
-                  value={tahun}
-                  onChange={(e) => setTahun(e.target.value)}
-                  placeholder="Years"
-                />
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="keterangan"
-                  value={keterangan}
-                  onChange={(e) => setKeterangan(e.target.value)}
-                  placeholder="Description"
-                />
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Condition</Form.Label>
-                <Form.Select onChange={handleConditionChange}>
-                  <option value="">Choose Condition</option>
-                  <option value="Good">Good</option>
-                  <option value="Broken">Broken</option>
-                  <option value="Middle">Middle</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-1">
-                <Form.Label>Category</Form.Label>
-                <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
-                  <option value="">Choose Category</option>
-                  {category.map((category) => (
-                    <option value={category._id} key={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Row>
-          </Form>
+          <Form.Group className="mb-1">
+            <Form.Label>Type Items</Form.Label>
+            <Form.Select onChange={handleTypeItemsChange}>
+              <option value="">Choose Type Items</option>
+              <option value="Disposable">Disposable</option>
+              <option value="Not Disposable">Not Dispasable</option>
+            </Form.Select>
+          </Form.Group>
+          {renderAdditionalField()}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={tambahClose}>
@@ -553,7 +630,10 @@ const BarangHabisDashboard = () => {
               </Form.Group>
               <Form.Group className="mb-1">
                 <Form.Label>Condition</Form.Label>
-                <Form.Select onChange={(e) => setEditedKondisi(e.target.value)} value={editedKondisi}>
+                <Form.Select
+                  onChange={(e) => setEditedKondisi(e.target.value)}
+                  value={editedKondisi}
+                >
                   <option value="">Choose Condition</option>
                   <option value="Good"> Good</option>
                   <option value="Broken">Broken</option>
@@ -562,7 +642,10 @@ const BarangHabisDashboard = () => {
               </Form.Group>
               <Form.Group className="mb-1">
                 <Form.Label>Category</Form.Label>
-                <Form.Select onChange={(e) => setEditedCategoryId(e.target.value)} value={editedCategoryId}>
+                <Form.Select
+                  onChange={(e) => setEditedCategoryId(e.target.value)}
+                  value={editedCategoryId}
+                >
                   <option value="">Choose Category</option>
                   {category.map((category) => (
                     <option value={category._id} key={category._id}>
@@ -593,7 +676,11 @@ const BarangHabisDashboard = () => {
         <Modal.Body>
           <Form onSubmit={updateBarang}>
             <Row>
-              <QRCode value={selectedBarangQr} className="p-4" ref={qrCodeRef}/>
+              <QRCode
+                value={selectedBarangQr}
+                className="p-4"
+                ref={qrCodeRef}
+              />
               <Form.Group className="mb-1">
                 <Form.Label>Items</Form.Label>
                 <Form.Control
@@ -612,13 +699,129 @@ const BarangHabisDashboard = () => {
           <Button variant="secondary" onClick={qrClose}>
             Close
           </Button>
-          <Button variant="primary"  onClick={handleDownload}>
+          <Button variant="primary" onClick={handleDownload}>
             Download
           </Button>
         </Modal.Footer>
       </Modal>
       {/* End Modal Qr */}
 
+      {/* Modal Hapus */}
+      <Modal
+        show={show4}
+        onHide={stockClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Stock Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Col>
+                <Form.Group className="mb-1">
+                  <Form.Control
+                    required
+                    type="text"
+                    name="deskripsi"
+                    placeholder="Items"
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-1">
+                  <Form.Control
+                    required
+                    type="number"
+                    name="deskripsi"
+                    placeholder="Qty"
+                  />
+                </Form.Group>
+              </Col>
+              <Col className="col-1">
+                <Button>
+                  <i class="fa-solid fa-square-plus fs-6 "></i>
+                </Button>
+              </Col>
+            </Row>
+            <Card className="mt-3">
+              <TableContainer
+                style={{ height: 490, width: "100%" }}
+                component={Paper}
+              >
+                <Table stickyHeader>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="fw-bold text-center">No</TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Items
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">Qty</TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Action
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {barang
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, index) => (
+                        <TableRow key={row._id}>
+                          <TableCell className="text-center">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.deskripsi}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.keterangan}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button
+                              variant="warning"
+                              className="me-1"
+                              onClick={() => editShow(row)}
+                            >
+                              <PencilSquare />
+                            </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => hapusShow(row)}
+                            >
+                              <Trash />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={barang.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Form>
+        </Modal.Body>
+        {/* <Modal.Footer>
+          <Button variant="secondary" onClick={stockClose}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={stockClose}>
+            Delete
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
+      {/* End Modal Hapus */}
     </Main>
   );
 };

@@ -92,7 +92,7 @@ const PeminjamanDashboard = () => {
         barangId: barang,
         keterangan: keterangan,
       };
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/dashboard/peminjaman",
         PeminjamanData
       );
@@ -104,10 +104,6 @@ const PeminjamanDashboard = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      const text = response.data.text;
-      await axios.get(
-        `https://api.telegram.org/bot6390829982:AAGD5YB4WrQhMoVbXCLdYSDokCT2BgZPfwI/sendMessage?chat_id=-953171747&text=${text}`
-      );
     } catch (error) {
       console.error(error);
       Swal.fire({

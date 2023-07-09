@@ -51,33 +51,21 @@ const KategoriDashboard = () => {
   };
   // End Modal Tambah
 
-  // Modal Edit
-  const [show2, setShow2] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [editedCategoryName, setEditedCategoryName] = useState("");
-
-  const editClose = () => {
-    setSelectedCategory(null);
-    setShow2(false);
-  };
-
-  const editShow = (kategori) => {
-    setSelectedCategory(kategori);
-    setEditedCategoryName(kategori.name);
-    setShow2(true);
-  };
-  // End Modal Edit
+  
 
   // Get Data
-  const [kategoriData, setKategoriData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [subData, setSubData] = useState([]);
 
   const fetchKategori = async () => {
     try {
       const response = await axios.get(
         "http://localhost:3000/dashboard/category"
       );
-      const kategoriData = response.data.data;
-      setKategoriData(kategoriData);
+      const subData = response.data.data;
+      const categoryData = response.data.category;
+      setSubData(subData);
+      setCategoryData(categoryData);
     } catch (error) {
       console.error(error);
     }
@@ -90,15 +78,18 @@ const KategoriDashboard = () => {
 
   // Add Data
   const [categoryName, setCategoryName] = useState("");
-  
+  const [subcategoryName, setSubcategoryName] = useState("");
+
   const addCategory = async (event) => {
-    try{
+    try {
       event.preventDefault();
       const categoryData = {
-        name: categoryName 
+        categoryId: categoryName,
+        name: subcategoryName,
       };
       await axios.post(
-        "http://localhost:3000/dashboard/category", categoryData
+        "http://localhost:3000/dashboard/category",
+        categoryData
       );
       fetchKategori();
       tambahClose();
@@ -108,10 +99,10 @@ const KategoriDashboard = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    } catch (error){
+    } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // Delete Data
   const deleteKategori = async () => {
@@ -133,22 +124,45 @@ const KategoriDashboard = () => {
   };
   // End Delete Data
 
+  // Modal Edit
+  const [show2, setShow2] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+  const [editedSubcategoryName, setEditedSubcategoryName] = useState("");
+
+  const editClose = () => {
+    setSelectedCategory(null);
+    setShow2(false);
+  };
+
+  const editShow = (kategori) => {
+    setSelectedCategory(kategori);
+    setEditedCategoryName(kategori.categoryId.name);
+    setEditedSubcategoryName(kategori.name);
+    setShow2(true);
+  };
+  // End Modal Edit
+
   // Edit Data
   const updateKategori = async (event) => {
     try {
       event.preventDefault();
       if (selectedCategory) {
         const categoryData = {
-          name: editedCategoryName
+          categoryId: editedCategoryName,
+          name: editedSubcategoryName,
         };
-        await axios.put(`http://localhost:3000/dashboard/category/${selectedCategory._id}`, categoryData);
+        await axios.put(
+          `http://localhost:3000/dashboard/category/${selectedCategory._id}`,
+          categoryData
+        );
         fetchKategori();
         editClose();
         Swal.fire({
-          icon: 'success',
-          title: 'Category Has Been Updated',
+          icon: "success",
+          title: "Category Has Been Updated",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       }
     } catch (error) {
@@ -196,12 +210,15 @@ const KategoriDashboard = () => {
                         Category
                       </TableCell>
                       <TableCell className="fw-bold text-center">
+                        Type Items
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
                         Action
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {kategoriData
+                    {subData
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -215,7 +232,14 @@ const KategoriDashboard = () => {
                             {row.name}
                           </TableCell>
                           <TableCell className="text-center">
-                            <Button variant="warning" className="me-2" onClick={() => editShow(row)}>
+                            {row.categoryId.name}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button
+                              variant="warning"
+                              className="me-2"
+                              onClick={() => editShow(row)}
+                            >
                               <PencilSquare />
                             </Button>
                             <Button
@@ -233,7 +257,7 @@ const KategoriDashboard = () => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={kategoriData.length}
+                count={subData.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
@@ -271,14 +295,25 @@ const KategoriDashboard = () => {
         <Modal.Body>
           <Form onSubmit={addCategory}>
             <Row>
+              <Form.Group className="mb-1">
+                <Form.Label>Type Items</Form.Label>
+                <Form.Select onChange={(e) => setCategoryName(e.target.value)}>
+                  <option value="">Choose Type</option>
+                  {categoryData.map((category) => (
+                    <option value={category._id} key={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
               <Form.Group>
                 <Form.Label>Category</Form.Label>
                 <Form.Control
                   required
                   type="text"
                   name="name"
-                  value={categoryName}
-                  onChange={(e) => setCategoryName(e.target.value)}
+                  value={subcategoryName}
+                  onChange={(e) => setSubcategoryName(e.target.value)}
                   placeholder="Category"
                 />
               </Form.Group>
@@ -304,14 +339,24 @@ const KategoriDashboard = () => {
         <Modal.Body>
           <Form onSubmit={updateKategori}>
             <Row>
+            <Form.Group className="mb-1">
+                <Form.Label>Type Items</Form.Label>
+                <Form.Select onChange={(e) => setEditedCategoryName(e.target.value)} value={editedCategoryName}>
+                  {categoryData.map((category) => (
+                    <option value={category._id} key={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
               <Form.Group>
                 <Form.Label>Category</Form.Label>
                 <Form.Control
                   required
                   type="text"
                   name="name"
-                  value={editedCategoryName}
-                  onChange={(e) => setEditedCategoryName(e.target.value)}
+                  value={editedSubcategoryName}
+                  onChange={(e) => setEditedSubcategoryName(e.target.value)}
                   placeholder="Category"
                 />
               </Form.Group>
