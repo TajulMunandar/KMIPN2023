@@ -24,6 +24,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import { Trash, PencilSquare, QrCode } from "react-bootstrap-icons";
+import { SelectAll } from "@mui/icons-material";
 
 const BarangHabisDashboard = () => {
   // Get Data
@@ -72,7 +73,7 @@ const BarangHabisDashboard = () => {
       hapusClose();
       Swal.fire({
         icon: "success",
-        title: "Category Has Been Deleted",
+        title: "Items Has Been Deleted",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -87,6 +88,7 @@ const BarangHabisDashboard = () => {
 
   const tambahClose = () => {
     setShow1(false);
+    resetForm();
   };
 
   const tambahShow = () => {
@@ -110,11 +112,21 @@ const BarangHabisDashboard = () => {
     }
   };
 
-  const [deskripsi, setDeskripsi] = useState("");
-  const [kode, setKode] = useState("");
+  const resetForm = () => {
+    setItems("");
+    setSerialNumber("");
+    setTahun("");
+    setQty("");
+    setDeskription("");
+    setKondisi("");
+    setCategoryId("");
+  };
+
+  const [items, setItems] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [tahun, setTahun] = useState("");
-  const [keterangan, setKeterangan] = useState("");
+  const [qty, setQty] = useState(1);
+  const [description, setDeskription] = useState("");
   const [kondisi, setKondisi] = useState("");
   const [categoryId, setCategoryId] = useState("");
 
@@ -127,20 +139,20 @@ const BarangHabisDashboard = () => {
     try {
       event.preventDefault();
       const itemsData = {
-        deskripsi: deskripsi,
-        kode: kode,
+        name: items,
         serialNumber: serialNumber,
-        tahun: tahun,
-        keterangan: keterangan,
+        procurementYear: tahun,
+        qty: qty,
+        description: description,
         kondisi: kondisi,
-        categoryId: categoryId,
+        subCategoryId: categoryId,
       };
       await axios.post("http://localhost:3000/dashboard/barang", itemsData);
       fetchBarang();
       tambahClose();
       Swal.fire({
         icon: "success",
-        title: "Category Has Been Deleted",
+        title: "Add Items Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -154,12 +166,13 @@ const BarangHabisDashboard = () => {
   const [show2, setShow2] = useState(false);
   const [selectBarang, setSelectBarang] = useState(null);
   const [editedBarang, setEditedBarang] = useState("");
-  const [editedKode, setEditedKode] = useState("");
+  const [editedQty, setEditedQty] = useState("");
   const [editedSerialNumber, setEditedSerialNumber] = useState("");
   const [editedTahun, setEditedTahun] = useState("");
   const [editedKeterangan, setEditedKeterangan] = useState("");
   const [editedKondisi, setEditedKondisi] = useState("");
   const [editedCategoryId, setEditedCategoryId] = useState("");
+  const [CategoryID, setCategoryID] = useState("");
 
   const editClose = () => {
     setSelectBarang(null);
@@ -168,14 +181,16 @@ const BarangHabisDashboard = () => {
 
   const editShow = (barang) => {
     setSelectBarang(barang);
-    setEditedBarang(barang.deskripsi);
-    setEditedKode(barang.kode);
+    setEditedBarang(barang.name);
     setEditedSerialNumber(barang.serialNumber);
-    setEditedTahun(barang.tahun);
-    setEditedKeterangan(barang.keterangan);
-    setEditedKondisi(barang.kondisi);
-    setEditedCategoryId(barang.categoryId._id);
+    setEditedTahun(barang.procurementYear);
+    setEditedQty(barang.qty);
+    setEditedKeterangan(barang.description);
+    setEditedKondisi(barang.condition);
+    setEditedCategoryId(barang.subCategoryId._id);
+    setCategoryID(barang.subCategoryId.categoryId.name === "Disposable");
     setShow2(true);
+    
   };
   // End Modal Edit
 
@@ -185,15 +200,14 @@ const BarangHabisDashboard = () => {
       event.preventDefault();
       if (selectBarang) {
         const itemsData = {
-          deskripsi: editedBarang,
-          kode: editedKode,
+          name: editedBarang,
           serialNumber: editedSerialNumber,
-          tahun: editedTahun,
-          keterangan: editedKeterangan,
-          kondisi: editedKondisi,
-          categoryId: editedCategoryId,
+          procurementYear: editedTahun,
+          condition: editedKondisi,
+          qty: editedQty,
+          description: editedKeterangan,
+          subCategoryId: editedCategoryId,
         };
-        console.log(itemsData);
         await axios.put(
           `http://localhost:3000/dashboard/barang/${selectBarang._id}`,
           itemsData
@@ -226,7 +240,7 @@ const BarangHabisDashboard = () => {
   const qrShow = (barang) => {
     setShow3(true);
     setSelectedBarangQr(barang._id);
-    setSelectedNameBarangQr(barang.deskripsi);
+    setSelectedNameBarangQr(barang.name);
   };
 
   const handleDownload = () => {
@@ -276,18 +290,6 @@ const BarangHabisDashboard = () => {
   const renderAdditionalField = () => {
     if (typeItems === "Disposable") {
       return (
-        <Form.Group>
-          <Form.Label>Additional Field</Form.Label>
-          <Form.Control
-            type="text"
-            value={additionalField}
-            onChange={handleAdditionalFieldChange}
-            placeholder="Additional Field"
-          />
-        </Form.Group>
-      );
-    } else if (typeItems === "Not Disposable") {
-      return (
         <Form onSubmit={addBarang}>
           <Row>
             <Form.Group className="mb-1">
@@ -295,21 +297,10 @@ const BarangHabisDashboard = () => {
               <Form.Control
                 required
                 type="text"
-                name="deskripsi"
-                value={deskripsi}
-                onChange={(e) => setDeskripsi(e.target.value)}
+                name="name"
+                value={items}
+                onChange={(e) => setItems(e.target.value)}
                 placeholder="Items"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Code</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="kode"
-                value={kode}
-                onChange={(e) => setKode(e.target.value)}
-                placeholder="Code"
               />
             </Form.Group>
             <Form.Group className="mb-1">
@@ -324,14 +315,25 @@ const BarangHabisDashboard = () => {
               />
             </Form.Group>
             <Form.Group className="mb-1">
-              <Form.Label>Years</Form.Label>
+              <Form.Label>Procurement Year</Form.Label>
               <Form.Control
                 required
                 type="number"
-                name="tahun"
+                name="procurementYear"
                 value={tahun}
                 onChange={(e) => setTahun(e.target.value)}
-                placeholder="Years"
+                placeholder="Procurement Year"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+            <Form.Label>Qty</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                name="qty"
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
+                placeholder="Qty"
               />
             </Form.Group>
             <Form.Group className="mb-1">
@@ -339,20 +341,84 @@ const BarangHabisDashboard = () => {
               <Form.Control
                 required
                 type="text"
-                name="keterangan"
-                value={keterangan}
-                onChange={(e) => setKeterangan(e.target.value)}
+                name="description"
+                value={description}
+                onChange={(e) => setDeskription(e.target.value)}
                 placeholder="Description"
               />
             </Form.Group>
             <Form.Group className="mb-1">
-              <Form.Label>Condition</Form.Label>
-              <Form.Select onChange={handleConditionChange}>
-                <option value="">Choose Condition</option>
-                <option value="Good">Good</option>
-                <option value="Broken">Broken</option>
-                <option value="Middle">Middle</option>
+              <Form.Label>Category</Form.Label>
+              <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
+                <option value="">Choose Category</option>
+                {category.map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </Form.Select>
+            </Form.Group>
+          </Row>
+        </Form>
+      );
+    } else if (typeItems === "Not Disposable") {
+      return (
+        <Form onSubmit={addBarang}>
+          <Row>
+            <Form.Group className="mb-1">
+              <Form.Label>Items</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="name"
+                value={items}
+                onChange={(e) => setItems(e.target.value)}
+                placeholder="Items"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Serial Number</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                name="serialNumber"
+                value={serialNumber}
+                onChange={(e) => setSerialNumber(e.target.value)}
+                placeholder="Serial Number"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Procurement Year</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                name="procurementYear"
+                value={tahun}
+                onChange={(e) => setTahun(e.target.value)}
+                placeholder="Procurement Year"
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Control
+                required
+                type="number"
+                name="qty"
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
+                placeholder="Qty"
+                hidden
+              />
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="description"
+                value={description}
+                onChange={(e) => setDeskription(e.target.value)}
+                placeholder="Description"
+              />
             </Form.Group>
             <Form.Group className="mb-1">
               <Form.Label>Category</Form.Label>
@@ -410,25 +476,28 @@ const BarangHabisDashboard = () => {
                     <TableRow>
                       <TableCell className="fw-bold text-center">No</TableCell>
                       <TableCell className="fw-bold text-center">
-                        Nama Barang
+                        Items 
                       </TableCell>
                       <TableCell className="fw-bold text-center">
                         Status
                       </TableCell>
                       <TableCell className="fw-bold text-center">
-                        Kode Barang
-                      </TableCell>
-                      <TableCell className="fw-bold text-center">
-                        Kategori
-                      </TableCell>
-                      <TableCell className="fw-bold text-center">
                         Serial Number
                       </TableCell>
                       <TableCell className="fw-bold text-center">
-                        Tahun Pengadaan
+                        Procurement Year
                       </TableCell>
                       <TableCell className="fw-bold text-center">
-                        Kondisi
+                        Qty
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Description
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Category
+                      </TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Condition
                       </TableCell>
                       <TableCell className="fw-bold text-center">Ket</TableCell>
                       <TableCell className="fw-bold text-center">
@@ -448,34 +517,37 @@ const BarangHabisDashboard = () => {
                             {index + 1}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.deskripsi}
+                            {row.name}
                           </TableCell>
                           <TableCell className="text-center">
                             <span
                               className={`badge ${
-                                row.status ? "bg-danger" : "bg-success"
+                                row.qty == 0 ? "bg-danger" : "bg-success"
                               }`}
                             >
-                              {row.status ? "Di-Pinjam" : "Tersedia"}
+                              {row.qty == 0 ? "Not Avalaible" : "Avaible"}
                             </span>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {row.kode}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {row.categoryId.name}
                           </TableCell>
                           <TableCell className="text-center">
                             {row.serialNumber}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.tahun}
+                            {row.procurementYear}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.kondisi}
+                            {row.qty}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.keterangan}
+                            {row.description}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.subCategoryId.name}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.condition}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.description}
                           </TableCell>
                           <TableCell className="text-center">
                             <Button
@@ -525,7 +597,7 @@ const BarangHabisDashboard = () => {
         </Modal.Header>
         <Modal.Body>
           Apakah Anda Yakin Ingin Menghapus{" "}
-          <span className="fw-bold">{selectedBarang?.deskripsi}</span> ?
+          <span className="fw-bold">{selectedBarang?.name}</span> ?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={hapusClose}>
@@ -585,14 +657,15 @@ const BarangHabisDashboard = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-1">
-                <Form.Label>Code</Form.Label>
+                <Form.Label>Qty</Form.Label>
                 <Form.Control
                   required
                   type="text"
-                  name="kode"
-                  value={editedKode}
-                  onChange={(e) => setEditedKode(e.target.value)}
+                  name="qty"
+                  value={editedQty}
+                  onChange={(e) => setEditedQty(e.target.value)}
                   placeholder="Code"
+                  disabled={CategoryID }
                 />
               </Form.Group>
               <Form.Group className="mb-1">
@@ -635,6 +708,7 @@ const BarangHabisDashboard = () => {
                   value={editedKondisi}
                 >
                   <option value="">Choose Condition</option>
+                  <option value="New"> New</option>
                   <option value="Good"> Good</option>
                   <option value="Broken">Broken</option>
                   <option value="Middle">Middle</option>
