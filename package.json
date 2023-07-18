@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.1",
     "@mui/x-data-grid": "^6.5.0",
+    "@yudiel/react-qr-scanner": "^1.1.9",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",

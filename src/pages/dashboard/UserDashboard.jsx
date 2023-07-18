@@ -79,7 +79,7 @@ const UserDashboard = () => {
       tambahClose();
       Swal.fire({
         icon: "success",
-        title: "Category Has Been Deleted",
+        title: "Add User Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -114,12 +114,18 @@ const UserDashboard = () => {
       hapusClose();
       Swal.fire({
         icon: "success",
-        title: "Category Has Been Deleted",
+        title: "User Has Been Deleted",
         showConfirmButton: false,
         timer: 1500,
       });
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.status,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
   // End Delete Data
@@ -163,7 +169,7 @@ const UserDashboard = () => {
         editClose();
         Swal.fire({
           icon: 'success',
-          title: 'Category Has Been Updated',
+          title: 'User Has Been Updated',
           showConfirmButton: false,
           timer: 1500
         });
@@ -318,7 +324,7 @@ const UserDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={tambahClose}>
+          <Button variant="outline-secondary" onClick={tambahClose}>
             Close
           </Button>
           <Button variant="primary" onClick={addUser}>
@@ -338,7 +344,7 @@ const UserDashboard = () => {
           <span className="fw-bold">{selectedUser?.name}</span> ?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={hapusClose}>
+          <Button variant="outline-secondary" onClick={hapusClose}>
             Close
           </Button>
           <Button variant="danger" onClick={deleteUser}>
@@ -400,7 +406,7 @@ const UserDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={editClose}>
+          <Button variant="outline-secondary" onClick={editClose}>
             Close
           </Button>
           <Button variant="warning" onClick={updateUser}>

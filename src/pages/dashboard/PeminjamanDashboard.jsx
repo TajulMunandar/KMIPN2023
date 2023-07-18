@@ -1,4 +1,12 @@
-import { Container, Button, Row, Col, Card, Modal, Form } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Card,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import Main from "../../component/dashboard/Main";
 import React, { useState, useEffect } from "react";
 import {
@@ -13,7 +21,7 @@ import {
 } from "@mui/material";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { Check2 } from "react-bootstrap-icons";
+import { Check2, PencilSquare } from "react-bootstrap-icons";
 
 const PeminjamanDashboard = () => {
   // Get Data
@@ -82,6 +90,7 @@ const PeminjamanDashboard = () => {
 
   const [barang, setBarang] = useState("");
   const [loaner, setLoaner] = useState("");
+  const [qty, setQty] = useState("");
   const [keterangan, setKeterangan] = useState("");
 
   const addPeminjaman = async (event) => {
@@ -89,8 +98,9 @@ const PeminjamanDashboard = () => {
       event.preventDefault();
       const PeminjamanData = {
         userId: loaner,
-        barangId: barang,
-        keterangan: keterangan,
+        itemId: barang,
+        qty: qty,
+        description: keterangan,
       };
       await axios.post(
         "http://localhost:3000/dashboard/peminjaman",
@@ -108,7 +118,7 @@ const PeminjamanDashboard = () => {
       console.error(error);
       Swal.fire({
         icon: "error",
-        title: "Item on loan",
+        title: error.response.data.status,
         showConfirmButton: false,
         timer: 1500,
       });
@@ -132,12 +142,19 @@ const PeminjamanDashboard = () => {
 
   // Check Loan
   const [selectedLoan, setSelectedLoan] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [kondisi, setKondisi] = useState(null);
 
   const checkLoan = async (event) => {
     try {
       event.preventDefault();
+      const checkItems = {
+        description: description,
+        condition: kondisi,
+      };
       await axios.put(
-        `http://localhost:3000/dashboard/peminjaman/check/${selectedLoan._id}`
+        `http://localhost:3000/dashboard/peminjaman/check/${selectedLoan._id}`,
+        checkItems
       );
       fetchPeminjaman();
       checkClose();
@@ -151,7 +168,67 @@ const PeminjamanDashboard = () => {
       console.error(error);
     }
   };
-  // 
+  //
+
+  // Modal Edit
+  const [show2, setShow2] = useState(false);
+  const [selectedEditLoan, setSelectedEditLoan] = useState(null);
+  const [editedItemName, setEditedItemName] = useState("");
+  const [editedLoanerName, setEditedLoanerName] = useState("");
+  const [editedQty, setEditedQty] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
+
+  const editClose = () => {
+    setSelectedEditLoan(null);
+    setShow2(false);
+  };
+
+  const editShow = (peminjaman) => {
+    setSelectedEditLoan(peminjaman);
+    setEditedItemName(peminjaman.itemId._id);
+    setEditedLoanerName(peminjaman.userId._id);
+    setEditedQty(peminjaman.qty);
+    setEditedDescription(peminjaman.description);
+    setShow2(true);
+    console.log(peminjaman.itemId);
+  };
+  //
+
+   // Edit Data
+   const updateLoan = async (event) => {
+    try {
+      event.preventDefault();
+      if (selectedEditLoan) {
+        const LoanData = {
+          userId: editedLoanerName,
+          itemId: editedItemName,
+          qty: editedQty,
+          description: editedDescription,
+        };
+        await axios.put(
+          `http://localhost:3000/dashboard/peminjaman/${selectedEditLoan._id}`,
+          LoanData
+        );
+        fetchPeminjaman();
+        editClose();
+        Swal.fire({
+          icon: "success",
+          title: "Loan Has Been Updated",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error.response.data.status,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.error(error);
+    }
+  };
+  // End Edit Data
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -185,6 +262,7 @@ const PeminjamanDashboard = () => {
                       <TableCell className="fw-bold text-center">
                         Items
                       </TableCell>
+                      <TableCell className="fw-bold text-center">qty</TableCell>
                       <TableCell className="fw-bold text-center">
                         Loaner
                       </TableCell>
@@ -211,19 +289,32 @@ const PeminjamanDashboard = () => {
                             {index + 1}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.barangId.deskripsi}
+                            {row.itemId.name}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {row.qty}
                           </TableCell>
                           <TableCell className="text-center">
                             {row.userId.name}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.keterangan}
+                            {row.description}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.tanggalPinjam.substring(0, 10)}
+                            {row.loanDate.substring(0, 10)}
                           </TableCell>
                           <TableCell className="text-center">
-                            <Button variant="success" onClick={() => checkShow(row)}>
+                            <Button
+                              variant="warning"
+                              className="me-1"
+                              onClick={() => editShow(row)}
+                            >
+                              <PencilSquare />
+                            </Button>
+                            <Button
+                              variant="success"
+                              onClick={() => checkShow(row)}
+                            >
                               <Check2 />
                             </Button>
                           </TableCell>
@@ -260,7 +351,7 @@ const PeminjamanDashboard = () => {
                   <option value="">Choose Items</option>
                   {items.map((items) => (
                     <option value={items._id} key={items._id}>
-                      {items.deskripsi}
+                      {items.name}
                     </option>
                   ))}
                 </Form.Select>
@@ -277,6 +368,17 @@ const PeminjamanDashboard = () => {
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-1">
+                <Form.Label>Qty</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  name="deskripsi"
+                  value={qty}
+                  onChange={(e) => setQty(e.target.value)}
+                  placeholder="Qty"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   required
@@ -291,7 +393,7 @@ const PeminjamanDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={tambahClose}>
+          <Button variant="outline-secondary" onClick={tambahClose}>
             Close
           </Button>
           <Button variant="primary" onClick={addPeminjaman}>
@@ -301,17 +403,48 @@ const PeminjamanDashboard = () => {
       </Modal>
       {/* End Modal Add */}
 
-      {/* Modal Hapus */}
+      {/* Modal Check */}
       <Modal show={show} onHide={checkClose}>
         <Modal.Header closeButton>
           <Modal.Title>Check Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Apakah Anda Yakin Ingin Menyimpan{" "}
-          <span className="fw-bold">{selectedLoan?.barangId.deskripsi}</span> ?
+          <Form.Label>Items</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            name="Items"
+            value={selectedLoan?.itemId.name}
+            placeholder="Items"
+            disabled
+          />
+          <Form onSubmit={checkLoan}>
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+            />
+
+            <Form.Group className="mb-1">
+              <Form.Label>Condition</Form.Label>
+              <Form.Select
+                onChange={(e) => setKondisi(e.target.value)}
+                value={kondisi}
+              >
+                <option value="">Choose Condition</option>
+                <option value="1"> Good</option>
+                <option value="2">Middle</option>
+                <option value="3">Broken</option>
+              </Form.Select>
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={checkClose}>
+          <Button variant="outline-secondary" onClick={checkClose}>
             Close
           </Button>
           <Button variant="success" onClick={checkLoan}>
@@ -319,7 +452,67 @@ const PeminjamanDashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* End Modal Hapus */}
+      {/* End Modal Check */}
+
+      {/* Modal Edit */}
+      <Modal show={show2} onHide={editClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Check Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={updateLoan}>
+            <Form.Group className="mb-1">
+              <Form.Label>Items</Form.Label>
+              <Form.Select onChange={(e) => setEditedItemName(e.target.value)} value={editedItemName}>
+                <option value="">Choose Items</option>
+                {items.map((items) => (
+                  <option value={items._id} key={items._id}>
+                    {items.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-1">
+                <Form.Label>Loaner</Form.Label>
+                <Form.Select onChange={(e) => setEditedLoanerName(e.target.value)} value={editedLoanerName}>
+                  <option value="">Choose User</option>
+                  {user.map((user) => (
+                    <option value={user._id} key={user._id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            <Form.Label>Qty</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              name="description"
+              value={editedQty}
+              onChange={(e) => setEditedQty(e.target.value)}
+              placeholder="Description"
+            />
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              name="description"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+              placeholder="Description"
+            />
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={editClose}>
+            Close
+          </Button>
+          <Button variant="warning" onClick={updateLoan}>
+            Edit
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* End Modal Edit */}
     </Main>
   );
 };

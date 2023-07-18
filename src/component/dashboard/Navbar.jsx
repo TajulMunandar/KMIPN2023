@@ -12,7 +12,7 @@ const Navibar = () => {
   useEffect(() =>{
     axios.get('http://localhost:3000/dashboard')
     .then(res => {
-        if(res.data.valid){
+        if(res.data.valid && res.data.username.isAdmin == 1){
             setName(res.data.username.username)
           }else{
             navigate('/')
@@ -41,7 +41,6 @@ const Navibar = () => {
                 <div className="p-1 text-black fw-semibold p-2">
                     <i className="fa-solid fa-user mx-1"></i>
                     {name}
-                    
                 </div>
             </Button>
             <div className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">

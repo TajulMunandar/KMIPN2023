@@ -24,7 +24,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import QRCode from "react-qr-code";
 import { Trash, PencilSquare, QrCode } from "react-bootstrap-icons";
-import { SelectAll } from "@mui/icons-material";
 
 const BarangHabisDashboard = () => {
   // Get Data
@@ -45,6 +44,7 @@ const BarangHabisDashboard = () => {
   useEffect(() => {
     fetchBarang();
     fetchCategories();
+    fetchStock();
   }, []);
   // End Get Data
 
@@ -93,6 +93,7 @@ const BarangHabisDashboard = () => {
 
   const tambahShow = () => {
     fetchCategories();
+    setQty(1);
     setShow1(true);
   };
   // End Modal Tambah
@@ -172,7 +173,6 @@ const BarangHabisDashboard = () => {
   const [editedKeterangan, setEditedKeterangan] = useState("");
   const [editedKondisi, setEditedKondisi] = useState("");
   const [editedCategoryId, setEditedCategoryId] = useState("");
-  const [CategoryID, setCategoryID] = useState("");
 
   const editClose = () => {
     setSelectBarang(null);
@@ -188,9 +188,7 @@ const BarangHabisDashboard = () => {
     setEditedKeterangan(barang.description);
     setEditedKondisi(barang.condition);
     setEditedCategoryId(barang.subCategoryId._id);
-    setCategoryID(barang.subCategoryId.categoryId.name === "Disposable");
     setShow2(true);
-    
   };
   // End Modal Edit
 
@@ -216,7 +214,7 @@ const BarangHabisDashboard = () => {
         editClose();
         Swal.fire({
           icon: "success",
-          title: "Category Has Been Updated",
+          title: "Items Has Been Updated",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -268,6 +266,7 @@ const BarangHabisDashboard = () => {
 
   const stockClose = () => {
     setShow4(false);
+    fetchBarang();
   };
 
   const stockShow = (barang) => {
@@ -275,170 +274,133 @@ const BarangHabisDashboard = () => {
   };
   //
 
-  // form dinamis
-  const [typeItems, setTypeItems] = useState("");
-  const [additionalField, setAdditionalField] = useState("");
+  // fetch stock
+  const [stock, setStock] = useState([]);
 
-  const handleTypeItemsChange = (e) => {
-    setTypeItems(e.target.value);
-  };
-
-  const handleAdditionalFieldChange = (e) => {
-    setAdditionalField(e.target.value);
-  };
-
-  const renderAdditionalField = () => {
-    if (typeItems === "Disposable") {
-      return (
-        <Form onSubmit={addBarang}>
-          <Row>
-            <Form.Group className="mb-1">
-              <Form.Label>Items</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="name"
-                value={items}
-                onChange={(e) => setItems(e.target.value)}
-                placeholder="Items"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Serial Number</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                name="serialNumber"
-                value={serialNumber}
-                onChange={(e) => setSerialNumber(e.target.value)}
-                placeholder="Serial Number"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Procurement Year</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                name="procurementYear"
-                value={tahun}
-                onChange={(e) => setTahun(e.target.value)}
-                placeholder="Procurement Year"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-            <Form.Label>Qty</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                name="qty"
-                value={qty}
-                onChange={(e) => setQty(e.target.value)}
-                placeholder="Qty"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="description"
-                value={description}
-                onChange={(e) => setDeskription(e.target.value)}
-                placeholder="Description"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Category</Form.Label>
-              <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
-                <option value="">Choose Category</option>
-                {category.map((category) => (
-                  <option value={category._id} key={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Row>
-        </Form>
+  const fetchStock = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/dashboard/history"
       );
-    } else if (typeItems === "Not Disposable") {
-      return (
-        <Form onSubmit={addBarang}>
-          <Row>
-            <Form.Group className="mb-1">
-              <Form.Label>Items</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="name"
-                value={items}
-                onChange={(e) => setItems(e.target.value)}
-                placeholder="Items"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Serial Number</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                name="serialNumber"
-                value={serialNumber}
-                onChange={(e) => setSerialNumber(e.target.value)}
-                placeholder="Serial Number"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Procurement Year</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                name="procurementYear"
-                value={tahun}
-                onChange={(e) => setTahun(e.target.value)}
-                placeholder="Procurement Year"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Control
-                required
-                type="number"
-                name="qty"
-                value={qty}
-                onChange={(e) => setQty(e.target.value)}
-                placeholder="Qty"
-                hidden
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="description"
-                value={description}
-                onChange={(e) => setDeskription(e.target.value)}
-                placeholder="Description"
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Label>Category</Form.Label>
-              <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
-                <option value="">Choose Category</option>
-                {category.map((category) => (
-                  <option value={category._id} key={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Row>
-        </Form>
-      );
-    } else {
-      return null;
+      const stock = response.data.data;
+      setStock(stock);
+    } catch (error) {
+      console.error(error);
     }
   };
-  // end form dinamis
+  // end fetch stock
+
+  // add Stock
+  const [itemsStock, setItemsStock] = useState();
+  const [qtyStock, setQtyStock] = useState();
+
+  const addStock = async (event) => {
+    event.preventDefault();
+    const Stock = {
+      itemId: itemsStock,
+      qty: qtyStock,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/dashboard/history",
+        Stock
+      );
+      fetchStock();
+      setItemsStock("");
+      setQtyStock("");
+      Swal.fire({
+        icon: "success",
+        title: "Add Stock Successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // end Add Stock
+
+  // modal Delete Stock
+  const [show5, setShow5] = useState(false);
+  const [SelectedItemsStock, setSelectedItemsStock] = useState();
+
+  const stockDeleteClose = () => {
+    setShow5(false);
+    fetchStock();
+  };
+
+  const stockDeleteShow = (stock) => {
+    setShow5(true);
+    setSelectedItemsStock(stock);
+  };
+  // end Delete Stock
+
+  // Delete Data
+  const deleteStock = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/dashboard/history/${SelectedItemsStock._id}`
+      );
+      fetchStock();
+      stockDeleteClose();
+      Swal.fire({
+        icon: "success",
+        title: "Items History Has Been Deleted",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // End Delete Data
+
+  // Modal Edit Stcok
+  const [show6, setShow6] = useState(false);
+  const [SelectedEditItemsStock, setSelectedEditItemsStock] = useState(null);
+  const [EditedItemsStock, setEditedItemsStock] = useState(null);
+  const [EditedQtyStock, setEditedQtyStock] = useState(null);
+
+  const stockEditClose = () => {
+    setShow6(false);
+    fetchStock();
+  };
+
+  const stockEditShow = (stock) => {
+    setShow6(true);
+    setSelectedEditItemsStock(stock);
+    setEditedItemsStock(stock.itemId._id);
+    setEditedQtyStock(stock.qty);
+  };
+  // End Modal Edit
+
+  // Edit Stock Items 
+  const EditStock = async (event) => {
+    try {
+      event.preventDefault();
+      if (SelectedEditItemsStock) {
+        const stockItems = {
+          itemId: EditedItemsStock,
+          qty: EditedQtyStock,
+        };
+        await axios.put(
+          `http://localhost:3000/dashboard/history/${SelectedEditItemsStock._id}`,
+           stockItems
+        );
+        fetchStock();
+        stockEditClose();
+        Swal.fire({
+          icon: "success",
+          title: "Items History Has Been Updated",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // end Edit Stock Items
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -459,7 +421,7 @@ const BarangHabisDashboard = () => {
           <i class="fa-solid fa-square-plus fs-6 "></i> Add Items
         </Button>
         <Button
-          className="fw-normal mb-1 mt-3 btn-info text-white"
+          className="fw-normal mb-1 mt-3 btn-dark text-white"
           onClick={stockShow}
         >
           <i class="fa-solid fa-square-plus fs-6 "></i> Add Stock
@@ -476,7 +438,7 @@ const BarangHabisDashboard = () => {
                     <TableRow>
                       <TableCell className="fw-bold text-center">No</TableCell>
                       <TableCell className="fw-bold text-center">
-                        Items 
+                        Items
                       </TableCell>
                       <TableCell className="fw-bold text-center">
                         Status
@@ -487,19 +449,16 @@ const BarangHabisDashboard = () => {
                       <TableCell className="fw-bold text-center">
                         Procurement Year
                       </TableCell>
-                      <TableCell className="fw-bold text-center">
-                        Qty
-                      </TableCell>
-                      <TableCell className="fw-bold text-center">
-                        Description
-                      </TableCell>
+                      <TableCell className="fw-bold text-center">Qty</TableCell>
                       <TableCell className="fw-bold text-center">
                         Category
                       </TableCell>
                       <TableCell className="fw-bold text-center">
                         Condition
                       </TableCell>
-                      <TableCell className="fw-bold text-center">Ket</TableCell>
+                      <TableCell className="fw-bold text-center">
+                        Description
+                      </TableCell>
                       <TableCell className="fw-bold text-center">
                         Action
                       </TableCell>
@@ -538,13 +497,32 @@ const BarangHabisDashboard = () => {
                             {row.qty}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.description}
-                          </TableCell>
-                          <TableCell className="text-center">
                             {row.subCategoryId.name}
                           </TableCell>
                           <TableCell className="text-center">
-                            {row.condition}
+                            <span
+                              className={`badge ${
+                                row.condition === 0
+                                  ? "bg-success"
+                                  : row.condition === 1
+                                  ? "bg-success"
+                                  : row.condition === 2
+                                  ? "bg-warning"
+                                  : row.condition === 3
+                                  ? "bg-danger"
+                                  : ""
+                              }`}
+                            >
+                              {row.condition === 0
+                                ? "New"
+                                : row.condition === 1
+                                ? "Good"
+                                : row.condition === 2
+                                ? "Middle"
+                                : row.condition === 3
+                                ? "Broken"
+                                : ""}
+                            </span>
                           </TableCell>
                           <TableCell className="text-center">
                             {row.description}
@@ -553,18 +531,19 @@ const BarangHabisDashboard = () => {
                             <Button
                               variant="primary"
                               onClick={() => qrShow(row)}
-                              className="me-1"
+                              className="me-1 mb-1"
                             >
                               <QrCode />
                             </Button>
                             <Button
                               variant="warning"
-                              className="me-1"
+                              className="me-1 mb-1"
                               onClick={() => editShow(row)}
                             >
                               <PencilSquare />
                             </Button>
                             <Button
+                              className="me-1 mb-1"
                               variant="danger"
                               onClick={() => hapusShow(row)}
                             >
@@ -600,7 +579,7 @@ const BarangHabisDashboard = () => {
           <span className="fw-bold">{selectedBarang?.name}</span> ?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={hapusClose}>
+          <Button variant="outline-secondary" onClick={hapusClose}>
             Close
           </Button>
           <Button variant="danger" onClick={deleteBarang}>
@@ -610,24 +589,85 @@ const BarangHabisDashboard = () => {
       </Modal>
       {/* End Modal Hapus */}
 
-       {/* Modal Tambah */}
-       <Modal show={show1} onHide={tambahClose}>
+      {/* Modal Tambah */}
+      <Modal show={show1} onHide={tambahClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group className="mb-1">
-            <Form.Label>Type Items</Form.Label>
-            <Form.Select onChange={handleTypeItemsChange}>
-              <option value="">Choose Type Items</option>
-              <option value="Disposable">Disposable</option>
-              <option value="Not Disposable">Not Dispasable</option>
-            </Form.Select>
-          </Form.Group>
-          {renderAdditionalField()}
+          <Form onSubmit={addBarang}>
+            <Row>
+              <Form.Group className="mb-1">
+                <Form.Label>Items</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="name"
+                  value={items}
+                  onChange={(e) => setItems(e.target.value)}
+                  placeholder="Items"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
+                <Form.Label>Serial Number</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  name="serialNumber"
+                  value={serialNumber}
+                  onChange={(e) => setSerialNumber(e.target.value)}
+                  placeholder="Serial Number"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
+                <Form.Label>Procurement Year</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  name="procurementYear"
+                  value={tahun}
+                  onChange={(e) => setTahun(e.target.value)}
+                  placeholder="Procurement Year"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
+                <Form.Label>Qty</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  name="qty"
+                  value={qty}
+                  onChange={(e) => setQty(e.target.value)}
+                  placeholder="Qty"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="description"
+                  value={description}
+                  onChange={(e) => setDeskription(e.target.value)}
+                  placeholder="Description"
+                />
+              </Form.Group>
+              <Form.Group className="mb-1">
+                <Form.Label>Category</Form.Label>
+                <Form.Select onChange={(e) => setCategoryId(e.target.value)}>
+                  <option value="">Choose Category</option>
+                  {category.map((category) => (
+                    <option value={category._id} key={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Row>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={tambahClose}>
+          <Button variant="outline-secondary" onClick={tambahClose}>
             Close
           </Button>
           <Button variant="primary" onClick={addBarang}>
@@ -665,7 +705,6 @@ const BarangHabisDashboard = () => {
                   value={editedQty}
                   onChange={(e) => setEditedQty(e.target.value)}
                   placeholder="Code"
-                  disabled={CategoryID }
                 />
               </Form.Group>
               <Form.Group className="mb-1">
@@ -708,10 +747,10 @@ const BarangHabisDashboard = () => {
                   value={editedKondisi}
                 >
                   <option value="">Choose Condition</option>
-                  <option value="New"> New</option>
-                  <option value="Good"> Good</option>
-                  <option value="Broken">Broken</option>
-                  <option value="Middle">Middle</option>
+                  <option value="0"> New</option>
+                  <option value="1"> Good</option>
+                  <option value="2">Middle</option>
+                  <option value="3">Broken</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-1">
@@ -732,7 +771,7 @@ const BarangHabisDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={editClose}>
+          <Button variant="outline-secondary" onClick={editClose}>
             Close
           </Button>
           <Button variant="warning" onClick={updateBarang}>
@@ -770,7 +809,7 @@ const BarangHabisDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={qrClose}>
+          <Button variant="outline-secondary" onClick={qrClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleDownload}>
@@ -780,7 +819,7 @@ const BarangHabisDashboard = () => {
       </Modal>
       {/* End Modal Qr */}
 
-      {/* Modal Hapus */}
+      {/* Modal Stock */}
       <Modal
         show={show4}
         onHide={stockClose}
@@ -791,16 +830,21 @@ const BarangHabisDashboard = () => {
           <Modal.Title>Stock Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={addStock}>
             <Row>
               <Col>
                 <Form.Group className="mb-1">
-                  <Form.Control
+                  <Form.Select
+                    onChange={(e) => setItemsStock(e.target.value)}
                     required
-                    type="text"
-                    name="deskripsi"
-                    placeholder="Items"
-                  />
+                  >
+                    <option value="">Choose Items</option>
+                    {barang.map((barang) => (
+                      <option value={barang._id} key={barang._id}>
+                        {barang.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
@@ -809,82 +853,78 @@ const BarangHabisDashboard = () => {
                     required
                     type="number"
                     name="deskripsi"
+                    value={qtyStock}
+                    onChange={(e) => setQtyStock(e.target.value)}
                     placeholder="Qty"
                   />
                 </Form.Group>
               </Col>
               <Col className="col-1">
-                <Button>
+                <Button type="submit">
                   <i class="fa-solid fa-square-plus fs-6 "></i>
                 </Button>
               </Col>
             </Row>
-            <Card className="mt-3">
-              <TableContainer
-                style={{ height: 490, width: "100%" }}
-                component={Paper}
-              >
-                <Table stickyHeader>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className="fw-bold text-center">No</TableCell>
-                      <TableCell className="fw-bold text-center">
-                        Items
-                      </TableCell>
-                      <TableCell className="fw-bold text-center">Qty</TableCell>
-                      <TableCell className="fw-bold text-center">
-                        Action
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {barang
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row, index) => (
-                        <TableRow key={row._id}>
-                          <TableCell className="text-center">
-                            {index + 1}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {row.deskripsi}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {row.keterangan}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <Button
-                              variant="warning"
-                              className="me-1"
-                              onClick={() => editShow(row)}
-                            >
-                              <PencilSquare />
-                            </Button>
-                            <Button
-                              variant="danger"
-                              onClick={() => hapusShow(row)}
-                            >
-                              <Trash />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={barang.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </Card>
           </Form>
+          <h4 className="mt-2">History Stock</h4>
+          <Card className="mt-3">
+            <TableContainer
+              style={{ height: 490, width: "100%" }}
+              component={Paper}
+            >
+              <Table stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className="fw-bold text-center">No</TableCell>
+                    <TableCell className="fw-bold text-center">Items</TableCell>
+                    <TableCell className="fw-bold text-center">Qty</TableCell>
+                    <TableCell className="fw-bold text-center">
+                      Action
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {stock
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <TableRow key={row._id}>
+                        <TableCell className="text-center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {row.itemId.name}
+                        </TableCell>
+                        <TableCell className="text-center">{row.qty}</TableCell>
+                        <TableCell className="text-center">
+                          <Button
+                            variant="warning"
+                            className="me-1"
+                            onClick={() => stockEditShow(row)}
+                          >
+                            <PencilSquare />
+                          </Button>
+                          <Button
+                            variant="danger"
+                            onClick={() => stockDeleteShow(row)}
+                          >
+                            <Trash />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={barang.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>
         </Modal.Body>
         {/* <Modal.Footer>
           <Button variant="secondary" onClick={stockClose}>
@@ -895,7 +935,74 @@ const BarangHabisDashboard = () => {
           </Button>
         </Modal.Footer> */}
       </Modal>
-      {/* End Modal Hapus */}
+
+      {/* hapus */}
+      <Modal show={show5} onHide={stockDeleteClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Stock Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Apakah Anda Yakin Ingin Menghapus{" "}
+          <span className="fw-bold">{SelectedItemsStock?.itemId.name}</span> ?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={stockDeleteClose}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={deleteStock}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* EndModal Hapus  */}
+
+      {/* hapus */}
+      <Modal show={show6} onHide={stockEditClose}>
+      <Form onSubmit={EditStock}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Stock Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Form.Group className="mb-1">
+              <Form.Label>Items</Form.Label>
+              <Form.Select
+                onChange={(e) => setEditedItemsStock(e.target.value)}
+                value={EditedItemsStock} disabled
+              >
+                <option value="">Choose Items</option>
+                {barang.map((barang) => (
+                  <option value={barang._id} key={barang._id}>
+                    {barang.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-1">
+              <Form.Label>Qty</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="deskripsi"
+                value={EditedQtyStock}
+                onChange={(e) => setEditedQtyStock(e.target.value)}
+                placeholder="Items"
+              />
+            </Form.Group>
+          
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={stockEditClose}>
+            Close
+          </Button>
+          <Button variant="warning" type="submit">
+            Edit
+          </Button>
+        </Modal.Footer>
+      </Form>
+      </Modal>
+      {/* EndModal Hapus  */}
+
+      {/* End Modal Stock */}
     </Main>
   );
 };

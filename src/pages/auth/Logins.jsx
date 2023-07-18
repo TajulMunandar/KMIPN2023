@@ -44,7 +44,11 @@ const Logins = () => {
           showConfirmButton: false,
           timer: 1500
         })
-        navigate("/dashboard")
+        if(res.data.isAdmin == 1){
+          navigate("/dashboard")
+        }else{
+          navigate("/")
+        }
       }else{
         Swal.fire({
           icon: 'error',

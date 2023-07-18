@@ -95,7 +95,7 @@ const KategoriDashboard = () => {
       tambahClose();
       Swal.fire({
         icon: "success",
-        title: "Category Has Been Deleted",
+        title: "Add Category Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -140,6 +140,7 @@ const KategoriDashboard = () => {
     setEditedCategoryName(kategori.categoryId.name);
     setEditedSubcategoryName(kategori.name);
     setShow2(true);
+    
   };
   // End Modal Edit
 
@@ -277,7 +278,7 @@ const KategoriDashboard = () => {
           <span className="fw-bold">{selectedKategori?.name}</span> ?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={hapusClose}>
+          <Button variant="outline-secondary" onClick={hapusClose}>
             Close
           </Button>
           <Button variant="danger" onClick={deleteKategori}>
@@ -321,7 +322,7 @@ const KategoriDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={tambahClose}>
+          <Button variant="outline-secondary" onClick={tambahClose}>
             Close
           </Button>
           <Button variant="primary" onClick={addCategory}>
@@ -364,7 +365,7 @@ const KategoriDashboard = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={editClose}>
+          <Button variant="outline-secondary" onClick={editClose}>
             Close
           </Button>
           <Button variant="warning" onClick={updateKategori}>
